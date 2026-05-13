@@ -1,0 +1,121 @@
+@font-face {
+  font-family: 'java';
+  src: url('/GoogleSansCode-VariableFont_wght.ttf');
+  font-style: normal;
+}
+@font-face {
+  font-family: 'standard';
+  src: url('/SpaceGrotesk-VariableFont_wght.ttf');
+  font-style: normal;
+}
+
+.staggered-menu-wrapper {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 300px;
+  height: 100vh;
+  z-index: 100;
+
+  pointer-events: none; /* allow clicks through by default */
+}
+
+.staggered-menu-wrapper[data-open="true"] {
+  pointer-events: auto;
+}
+
+.sm-toggle,
+.staggered-menu-panel,
+.sm-prelayer {
+  pointer-events: auto;
+}
+
+/* Toggle button */
+.sm-toggle {
+  background-color: white;
+  padding: .5rem .75rem .5rem .7rem;
+  border-radius: 20px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border: none;
+  outline: none;
+
+  position: absolute;
+  left: 40px;
+  top: 35px;
+  transform: translateY(-50%);
+  z-index: 1200;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: box-shadow 0.15s ease, transform 0.25s ease;
+}
+
+.sm-toggle img {
+  height: 1.7rem;
+  transition: transform 0.35s ease;
+}
+
+.sm-toggle img.rotated {
+  transform: rotate(180deg);
+}
+
+/* Prelayer */
+.sm-prelayer {
+  position: fixed;
+  width: 300px;
+  height: 100vh;
+  background: var(--sm-accent);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.25);
+}
+
+/* Panel */
+.staggered-menu-panel {
+  position: fixed;
+  width: 300px;
+  height: 100vh;
+  background: #F9F9F7;
+  /* backdrop-filter: blur(12px); */
+  padding: 6rem 0rem 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+/* List */
+.sm-panel-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.sm-panel-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-family: standard;
+  font-size: 2rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.25s;
+  padding-left: 2rem;
+}
+
+.sm-panel-item:hover {
+  color: var(--sm-accent);
+}
+
+.sm-panel-item.active {
+  background: #203453;
+  color: white;
+  border-radius: 8px;
+  padding-left: 0.8rem;
+}
+
+.sm-panel-itemIcon {
+  width: 3rem;
+  height: 3rem;
+}

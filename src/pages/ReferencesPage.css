@@ -1,0 +1,158 @@
+.references-page {
+  min-height: 100vh;
+  padding: 1rem;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Dark overlay for readability */
+.references-page::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 15, 18, 0.25);
+  z-index: 0;
+}
+
+.references-page > * {
+  position: relative;
+  z-index: 1;
+}
+
+.references-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  animation: fadeInDown 0.6s ease-out;
+}
+
+.references-header h1 {
+  font-size: 3rem;
+  font-weight: 800;
+  color: #b2f65f;
+  text-shadow: 
+    3px 3px 0 rgb(0, 0, 0),
+    0 0 20px rgba(255, 255, 255, 0.256);
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.02em;
+  font-family: fancy, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.references-header p {
+  color: #ffffff;
+  font-size: 1.15rem;
+  font-weight: 700;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+  font-family: inter,'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Carousel Container */
+.bento-carousel-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto 2rem;
+}
+
+/* Carousel Arrows */
+.carousel-arrow {
+  background: rgba(255, 255, 255, 0.9);
+  border: 3px solid #1a1a1a;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  color: #1a1a1a;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.carousel-arrow:hover {
+  transform: scale(1.15);
+  background: #1a1a1a;
+  color: #fff;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+.carousel-arrow:active {
+  transform: scale(1.05);
+}
+
+/* Carousel Dots */
+.carousel-dots {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.carousel-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  border: 2px solid #1a1a1a;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.carousel-dot.active {
+  background: #1a1a1a;
+  transform: scale(1.3);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5);
+}
+
+.carousel-dot:hover:not(.active) {
+  background: rgba(255, 255, 255, 0.7);
+  transform: scale(1.1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .references-page {
+    padding: 1rem;
+  }
+
+  .references-header h1 {
+    font-size: 2rem;
+  }
+
+  .references-header p {
+    font-size: 0.95rem;
+  }
+
+  .bento-carousel-container {
+    gap: 1rem;
+  }
+
+  .carousel-arrow {
+    width: 50px;
+    height: 50px;
+  }
+
+  .carousel-arrow svg {
+    width: 24px;
+    height: 24px;
+  }
+}

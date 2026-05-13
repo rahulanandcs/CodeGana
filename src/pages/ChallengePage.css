@@ -1,0 +1,1243 @@
+@font-face {
+  font-family: 'java';
+  src: url('/GoogleSansCode-VariableFont_wght.ttf');
+  font-style: normal;
+}
+@font-face {
+  font-family: 'gummy';
+  src: url('/SourGummy-VariableFont_wdth,wght.ttf');
+  font-style: normal;
+}
+@font-face {
+  font-family: 'handwritten';
+  src: url('/AlanSans-VariableFont_wght.ttf');
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('/Inter-VariableFont_opsz,wght.ttf');
+  font-style: normal;
+}
+
+/* ----- General Page Styling ----- */
+.challenge-page {
+  margin: 0 auto;
+  padding: 2rem;
+  background: linear-gradient(160deg, #1e1e2f 0%, #2c2c3d 100%);
+  color: #e0e0e0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.challenge-page h1 {
+  font-family: handwritten, Calibri, 'Trebuchet MS', sans-serif;
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #b2f65f;
+  text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+  width: 90%;
+  padding-top: .5em;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.challenge-page p {
+  font-family: Inter, Calibri, 'Trebuchet MS', sans-serif;
+  font-size: 1.2em;
+  font-weight: 600;
+  color: #cfcfcf;
+  line-height: 1.5;
+}
+
+/* ----- Progress Bar ----- */
+.progress-bar {
+  width: 100%;
+  height: 10px;
+  background: #3a3a4a;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+
+.progress-bar-inner {
+  height: 100%;
+  background: linear-gradient(90deg, #b2f65f, #5ff662);
+  border-radius: 5px;
+  transition: width 0.5s ease-in-out;
+}
+
+.challenge-header p:nth-child(4) {
+  font-size: 1em;
+  font-family: java, Calibri, 'Trebuchet MS', sans-serif;;
+  font-weight: 600;
+}
+
+/* ----- XP & Streak Stats ----- */
+/* XP animation */
+@keyframes xp-spin {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(360deg) scale(1.3); }
+  100% { transform: rotate(720deg) scale(1); }
+}
+
+.animate-xp {
+  display: inline-block;
+  animation: xp-spin 0.6s ease-in-out;
+}
+
+/* ----- Top Workspace Layout ----- */
+.workspace-top {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+  align-items: stretch;
+}
+
+.code-editor-container {
+  flex: 1;
+  min-width: 0;
+}
+
+.editor-side-panel {
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+
+.input-box-container {
+  width: 100%;
+  color: #ffffff;
+  font-family: java, monospace;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.input-box-container h2,
+.output-panel-container h2 {
+  margin: 0 0 0.5rem 0;
+  font-family: java, monospace;
+  font-size: 1rem;
+  color: #b2f65f;
+}
+
+.input-box {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 6px;
+  background-color: #111;
+  color: white;
+  border: 1px solid #2a2a2a;
+  font-family: java, monospace;
+  font-size: 1rem;
+  box-sizing: border-box;
+  resize: vertical;
+}
+
+.output-panel-container {
+  background: #12121b;
+  border-left: 2px solid #b2f65f72;
+  border-right: 2px solid #b2f65f75;
+  border-bottom: 2px solid #b2f65f79;
+  border-top: 2px solid #b2f65f70;
+  padding: 1rem;
+  border-radius: 5px;
+  font-family: java, monospace;
+  font-weight: 600;
+  font-size: 1.1em;
+  color: #fff;
+  white-space: pre-wrap;
+  min-height: 5rem;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  overflow-x: auto;
+}
+
+@media (max-width: 900px) {
+  .workspace-top {
+    flex-direction: column;
+  }
+
+  .editor-side-panel {
+    width: 100%;
+  }
+}
+
+/* ----- Run Button ----- */
+.run-button {
+  width: 100%;
+  margin-top: 0;
+  margin-bottom: 0;
+  padding: 0.7rem 1.5rem;
+  background: #0f0f12;
+  color: #b2f65f;
+  font-weight: bold;
+  border: 1px solid #b2f65f;
+  border-radius: 8px;
+  cursor: pointer;
+  position: relative;
+  overflow: visible;
+  transition: all 0.3s ease;
+  font-family: java, monospace;
+}
+
+/* Hover effect: subtle cursed energy flowing outward like heat */
+.run-button:hover {
+  color: #fff;
+  border-color: #00d4ff;
+  box-shadow:
+    0 0 10px rgba(0, 212, 255, 0.4),
+    0 0 20px rgba(0, 212, 255, 0.2);
+}
+
+/* Heat-like cursed energy flowing outward */
+.run-button:hover::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle, 
+      rgba(0, 212, 255, 0.3) 0%,
+      rgba(0, 255, 221, 0.15) 40%,
+      transparent 70%
+    );
+  transform: translate(-50%, -50%);
+  animation: heat-wave 2s ease-out infinite;
+  pointer-events: none;
+  border-radius: 8px;
+  filter: blur(8px);
+  z-index: 1;
+}
+
+/* Secondary heat wave for layered effect */
+.run-button:hover::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle, 
+      rgba(0, 255, 221, 0.2) 0%,
+      rgba(0, 212, 255, 0.1) 50%,
+      transparent 80%
+    );
+  transform: translate(-50%, -50%);
+  animation: heat-wave 2s ease-out 0.5s infinite;
+  pointer-events: none;
+  border-radius: 8px;
+  filter: blur(10px);
+  z-index: 1;
+}
+
+@keyframes heat-wave {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(2);
+    opacity: 0;
+  }
+}
+
+/* Click effect: BLACK FLASH - lightning bolts shooting outward */
+.run-button:active {
+  transform: scale(0.98);
+  box-shadow: 
+    0 0 20px rgba(255, 0, 60, 0.6),
+    0 0 10px rgba(0, 0, 0, 0.8);
+}
+
+/* Lightning container for multiple bolts */
+.run-button.flash-active {
+  animation: button-flash 0.4s ease-out;
+}
+
+@keyframes button-flash {
+  0% {
+    border-color: #b2f65f;
+  }
+  15% {
+    border-color: #ff003c;
+    box-shadow: 
+      0 0 25px rgba(255, 0, 60, 0.7),
+      0 0 15px rgba(0, 0, 0, 0.9),
+      inset 0 0 20px rgba(0, 0, 0, 0.6);
+  }
+  100% {
+    border-color: #b2f65f;
+    box-shadow: none;
+  }
+}
+
+/* Lightning bolts base styling - 32 BOLTS clustered top/bottom */
+.lightning-bolt {
+  position: absolute;
+  width: 18px;
+  height: 60px;
+  background: #000;
+  border: 2px solid #ff003c;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 20;
+  box-shadow: 
+    0 0 8px rgba(255, 0, 60, 0.8),
+    0 0 4px rgba(255, 0, 60, 0.6),
+    inset 0 0 6px rgba(0, 0, 0, 0.9);
+  clip-path: polygon(
+    45% 0%, 55% 0%,
+    52% 15%, 70% 15%,
+    48% 30%, 60% 30%,
+    50% 45%, 72% 45%,
+    45% 60%, 58% 60%,
+    50% 75%, 65% 75%,
+    45% 90%, 55% 90%,
+    48% 100%, 52% 100%,
+    55% 88%, 48% 88%,
+    52% 73%, 38% 73%,
+    55% 58%, 45% 58%,
+    58% 43%, 32% 43%,
+    55% 28%, 45% 28%,
+    60% 13%, 48% 13%
+  );
+}
+
+/* TOP CLUSTER - 13 bolts spread across top arc (from -60° to +60°) */
+.lightning-bolt-0 { top: -65px; left: 50%; transform: translateX(-50%) rotate(0deg); }
+.lightning-bolt-1 { top: -64px; left: 56%; transform: rotate(10deg); }
+.lightning-bolt-2 { top: -62px; left: 62%; transform: rotate(20deg); }
+.lightning-bolt-3 { top: -58px; left: 68%; transform: rotate(30deg); }
+.lightning-bolt-4 { top: -52px; left: 73%; transform: rotate(40deg); }
+.lightning-bolt-5 { top: -45px; left: 78%; transform: rotate(50deg); }
+.lightning-bolt-6 { top: -36px; left: 82%; transform: rotate(60deg); }
+.lightning-bolt-7 { top: -64px; right: 56%; transform: rotate(-10deg); }
+.lightning-bolt-8 { top: -62px; right: 62%; transform: rotate(-20deg); }
+.lightning-bolt-9 { top: -58px; right: 68%; transform: rotate(-30deg); }
+.lightning-bolt-10 { top: -52px; right: 73%; transform: rotate(-40deg); }
+.lightning-bolt-11 { top: -45px; right: 78%; transform: rotate(-50deg); }
+.lightning-bolt-12 { top: -36px; right: 82%; transform: rotate(-60deg); }
+
+/* BOTTOM CLUSTER - 13 bolts spread across bottom arc (from 120° to 240°) */
+.lightning-bolt-13 { bottom: -65px; left: 50%; transform: translateX(-50%) rotate(180deg); }
+.lightning-bolt-14 { bottom: -64px; left: 56%; transform: rotate(-170deg); }
+.lightning-bolt-15 { bottom: -62px; left: 62%; transform: rotate(-160deg); }
+.lightning-bolt-16 { bottom: -58px; left: 68%; transform: rotate(-150deg); }
+.lightning-bolt-17 { bottom: -52px; left: 73%; transform: rotate(-140deg); }
+.lightning-bolt-18 { bottom: -45px; left: 78%; transform: rotate(-130deg); }
+.lightning-bolt-19 { bottom: -36px; left: 82%; transform: rotate(-120deg); }
+.lightning-bolt-20 { bottom: -64px; right: 56%; transform: rotate(170deg); }
+.lightning-bolt-21 { bottom: -62px; right: 62%; transform: rotate(160deg); }
+.lightning-bolt-22 { bottom: -58px; right: 68%; transform: rotate(150deg); }
+.lightning-bolt-23 { bottom: -52px; right: 73%; transform: rotate(140deg); }
+.lightning-bolt-24 { bottom: -45px; right: 78%; transform: rotate(130deg); }
+.lightning-bolt-25 { bottom: -36px; right: 82%; transform: rotate(120deg); }
+
+/* LEFT SIDE - 3 bolts */
+.lightning-bolt-26 { top: 25%; left: -65px; transform: rotate(-70deg); }
+.lightning-bolt-27 { top: 50%; left: -67px; transform: translateY(-50%) rotate(-90deg); }
+.lightning-bolt-28 { bottom: 25%; left: -65px; transform: rotate(-110deg); }
+
+/* RIGHT SIDE - 3 bolts */
+.lightning-bolt-29 { top: 25%; right: -65px; transform: rotate(70deg); }
+.lightning-bolt-30 { top: 50%; right: -67px; transform: translateY(-50%) rotate(90deg); }
+.lightning-bolt-31 { bottom: 25%; right: -65px; transform: rotate(110deg); }
+
+/* Animation for all lightning bolts */
+.lightning-bolt.lightning-active {
+  animation: lightning-explode 0.5s ease-out forwards;
+}
+
+/* Stagger animations */
+.lightning-bolt-0.lightning-active { animation-delay: 0s; }
+.lightning-bolt-1.lightning-active { animation-delay: 0.015s; }
+.lightning-bolt-2.lightning-active { animation-delay: 0.03s; }
+.lightning-bolt-3.lightning-active { animation-delay: 0.045s; }
+.lightning-bolt-4.lightning-active { animation-delay: 0.06s; }
+.lightning-bolt-5.lightning-active { animation-delay: 0.075s; }
+.lightning-bolt-6.lightning-active { animation-delay: 0.09s; }
+.lightning-bolt-7.lightning-active { animation-delay: 0.015s; }
+.lightning-bolt-8.lightning-active { animation-delay: 0.03s; }
+.lightning-bolt-9.lightning-active { animation-delay: 0.045s; }
+.lightning-bolt-10.lightning-active { animation-delay: 0.06s; }
+.lightning-bolt-11.lightning-active { animation-delay: 0.075s; }
+.lightning-bolt-12.lightning-active { animation-delay: 0.09s; }
+.lightning-bolt-13.lightning-active { animation-delay: 0.105s; }
+.lightning-bolt-14.lightning-active { animation-delay: 0.12s; }
+.lightning-bolt-15.lightning-active { animation-delay: 0.135s; }
+.lightning-bolt-16.lightning-active { animation-delay: 0.15s; }
+.lightning-bolt-17.lightning-active { animation-delay: 0.165s; }
+.lightning-bolt-18.lightning-active { animation-delay: 0.18s; }
+.lightning-bolt-19.lightning-active { animation-delay: 0.195s; }
+.lightning-bolt-20.lightning-active { animation-delay: 0.12s; }
+.lightning-bolt-21.lightning-active { animation-delay: 0.135s; }
+.lightning-bolt-22.lightning-active { animation-delay: 0.15s; }
+.lightning-bolt-23.lightning-active { animation-delay: 0.165s; }
+.lightning-bolt-24.lightning-active { animation-delay: 0.18s; }
+.lightning-bolt-25.lightning-active { animation-delay: 0.195s; }
+.lightning-bolt-26.lightning-active { animation-delay: 0.21s; }
+.lightning-bolt-27.lightning-active { animation-delay: 0.225s; }
+.lightning-bolt-28.lightning-active { animation-delay: 0.24s; }
+.lightning-bolt-29.lightning-active { animation-delay: 0.21s; }
+.lightning-bolt-30.lightning-active { animation-delay: 0.225s; }
+.lightning-bolt-31.lightning-active { animation-delay: 0.24s; }
+
+@keyframes lightning-explode {
+  0% {
+    opacity: 1;
+    filter: blur(0px);
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    filter: blur(5px);
+  }
+}
+
+/* ----- Explanation Box ----- */
+.explanation-panel {
+  background: #12121b;
+  padding: 1rem;
+  border-radius: 5px;
+  color: #cfcfcf;
+  font-family: Inter, monospace;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+/* ----- Navigation Buttons ----- */
+.nav-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.nav-buttons .prev-btn, .next-btn  {
+  padding: 0.6rem 1.2rem;
+  font-family: java, monospace;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.nav-buttons .prev-btn:hover, .next-btn:hover {
+  border-color: #b2f65f;
+  box-shadow: 0 0 7px #b2f65f;
+}
+
+.nav-buttons .prev-btn:active, .next-btn:active {
+  transform: translateY(4px) scaleY(0.8) scaleX(1.1);
+  box-shadow: 0 1px #0056b3; 
+}
+
+.nav-buttons .prev-btn {
+  background: #2c2c3d;
+  color: #e0e0e0;
+}
+
+.nav-buttons .next-btn {
+  background: #b2f65f;
+  color: #0f0f12;
+}
+
+
+
+/* Map Stuff */
+/* 1.1 */
+/* ============================================
+   REFINED MAP FEATURES - DUOLINGO STYLE
+   Replace lines 453 and below in ChallengePage.css
+   ============================================ */
+
+/* Map Button - Centered at Top */
+.challenge-toppy {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+}
+
+.map-button-row {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.map-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1.75rem;
+  border: 3px solid #b2f65f;
+  border-radius: 50px;
+  background: linear-gradient(135deg, #1a1f2e 0%, #0f1419 100%);
+  color: #b2f65f;
+  font-family: java, monospace;
+  font-size: 1.1rem;
+  font-weight: 800;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.4),
+    0 0 20px rgba(178, 246, 95, 0.2),
+    inset 0 -3px 10px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  margin-top: 0.5em;
+}
+
+.map-button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(178, 246, 95, 0.15) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.map-button:hover {
+  transform: translateY(-3px) scale(1.05);
+  border-color: #d6ff9a;
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.5),
+    0 0 30px rgba(178, 246, 95, 0.4),
+    inset 0 -3px 10px rgba(0, 0, 0, 0.3);
+}
+
+.map-button:hover::before {
+  opacity: 1;
+}
+
+.map-button:active {
+  transform: translateY(-1px) scale(1.02);
+}
+
+/* CSS Globe Icon */
+.map-globe-icon {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  border: 3px solid #b2f65f;
+  border-radius: 50%;
+  display: inline-block;
+  box-sizing: border-box;
+  box-shadow: 
+    inset 0 0 12px rgba(178, 246, 95, 0.2),
+    0 0 8px rgba(178, 246, 95, 0.3);
+  animation: globeRotate 8s linear infinite;
+}
+
+@keyframes globeRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Latitude line (horizontal) */
+.map-globe-icon::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 2px;
+  transform: translate(-50%, -50%);
+  background: #b2f65f;
+  border-radius: 2px;
+}
+
+/* Longitude line (vertical) */
+.map-globe-icon::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2px;
+  height: 100%;
+  transform: translate(-50%, -50%);
+  background: #b2f65f;
+  border-radius: 2px;
+}
+
+/* Paint Drip Overlay - Smooth & Cartoony */
+.map-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  pointer-events: all;
+}
+
+.map-overlay-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(6, 8, 14, 0.6);
+  backdrop-filter: blur(8px);
+  animation: backdropFadeIn 0.4s ease-out;
+  animation: paintDrip 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@keyframes backdropFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Map Sheet - Paint Drip Animation */
+.map-sheet {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 15, 18, 0.5);
+  overflow-y: auto;
+  overflow-x: hidden;
+  animation: paintDrip 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform-origin: top center;
+  box-shadow: 
+    inset 0 2px 0 rgba(178, 246, 95, 0.3),
+    0 20px 60px rgba(0, 0, 0, 0.8);
+}
+
+@keyframes paintDrip {
+  0% {
+    clip-path: ellipse(100% 0% at 50% 0%);
+    transform: translateY(-5%) scaleY(0.9);
+  }
+  40% {
+    clip-path: ellipse(110% 45% at 50% 0%);
+    transform: translateY(0) scaleY(1.02);
+  }
+  70% {
+    clip-path: ellipse(105% 75% at 50% 0%);
+    transform: translateY(0) scaleY(1);
+  }
+  100% {
+    clip-path: ellipse(100% 100% at 50% 50%);
+    transform: translateY(0) scaleY(1);
+  }
+}
+
+/* Map Topbar */
+.map-topbar {
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 2rem;
+  background: rgba(10, 14, 24, 0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 2px solid rgba(178, 246, 95, 0.2);
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.map-topbar h2 {
+  margin: 0;
+  font-family: handwritten, Calibri, sans-serif;
+  font-size: 2rem;
+  color: #b2f65f;
+  text-shadow: 0 0 20px rgba(178, 246, 95, 0.4);
+  letter-spacing: -1px;
+}
+
+.map-close-button {
+  padding: 0.7rem 1.2rem;
+  border-radius: 12px;
+  border: 2px solid #b2f65f;
+  background: linear-gradient(135deg, #1a1f2e 0%, #0f1419 100%);
+  color: #b2f65f;
+  font-family: java, monospace;
+  font-size: 1.2rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.map-close-button:hover {
+  background: linear-gradient(135deg, #242936 0%, #14181f 100%);
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+.map-close-button:active {
+  transform: scale(0.98);
+}
+
+/* Duolingo-Style Challenge Map */
+.challenge-map {
+  position: relative;
+  justify-self: center;
+  max-width: 1200px;
+  width: 30em;
+  margin: 0 auto;
+  padding: 3rem 2rem 6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Path connector between nodes */
+.challenge-map::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: calc(100% - 6rem);
+  background: linear-gradient(
+    180deg,
+    #b2f65f 0%,
+    #7edc42 25%,
+    #5ce1e6 50%,
+    #48dbfb 75%,
+    #b2f65f 100%
+  );
+  border-radius: 10px;
+  opacity: 0.3;
+  z-index: 0;
+}
+
+.map-node-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  z-index: 1;
+  animation: nodeSlideIn 0.5s ease-out backwards;
+}
+
+.map-node-row:nth-child(1) { animation-delay: 0.1s; }
+.map-node-row:nth-child(2) { animation-delay: 0.15s; }
+.map-node-row:nth-child(3) { animation-delay: 0.2s; }
+.map-node-row:nth-child(4) { animation-delay: 0.25s; }
+.map-node-row:nth-child(5) { animation-delay: 0.3s; }
+.map-node-row:nth-child(6) { animation-delay: 0.35s; }
+
+@keyframes nodeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Zigzag pattern */
+.map-node-row.left {
+  justify-content: flex-start;
+  padding-left: 15%;
+}
+
+.map-node-row.right {
+  justify-content: flex-start;
+  flex-direction: row-reverse;
+  padding-right: 15%;
+}
+
+/* Challenge Node Buttons */
+.map-node {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  font-family: java, monospace;
+  font-weight: 900;
+  font-size: 1.4rem;
+  color: #0a0e14;
+  background: linear-gradient(135deg, #d6ff9a 0%, #b2f65f 50%, #8bc34a 100%);
+  box-shadow:
+    0 10px 0 #5a8d2f,
+    0 16px 30px rgba(0, 0, 0, 0.4),
+    inset 0 -3px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: completePulse 0.1s ease-out;
+  position: relative;
+}
+
+.map-node::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(246, 95, 95, 0) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
+
+.map-node:hover:not(:disabled) {
+  transform: translateY(3px) scale(1.01);
+  box-shadow:
+    0 8px 0 #5a8d2f,
+    0 16px 30px rgba(0, 0, 0, 0.5),
+    inset 0 -3px 8px rgba(0, 0, 0, 0.2);
+}
+
+.map-node:hover:not(:disabled)::before {
+  opacity: 1;
+}
+
+.map-node:active:not(:disabled) {
+  transform: translateY(5px) scale(1.02);
+  box-shadow:
+    0 5px 0 #5a8d2f,
+    0 10px 20px rgba(0, 0, 0, 0.3),
+    inset 0 -3px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Completed Node - Cyan/Turquoise */
+.map-node.completed {
+  background: linear-gradient(135deg, #a5f3fc 0%, #5ce1e6 50%, #39cfe0 100%);
+  color: #0a0e14;
+  box-shadow:
+    0 10px 0 #1e7d87,
+    0 16px 30px rgba(0, 0, 0, 0.4),
+    inset 0 -3px 8px rgba(0, 0, 0, 0.2);
+  animation: completePulse 0.6s ease-out;
+}
+
+@keyframes completePulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.01); }
+}
+
+.map-node.completed:hover:not(:disabled) {
+  box-shadow:
+    0 8px 0 #1e7d87,
+    0 16px 30px rgba(0, 0, 0, 0.5),
+    inset 0 -3px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Current Node - Glowing */
+.map-node.current {
+  background: linear-gradient(135deg, #b2f65f 0%, #00ffdd 100%);
+  animation: currentGlow 2s ease-in-out infinite;
+  outline: 4px solid rgba(255, 255, 255, 0.4);
+  outline-offset: 4px;
+}
+
+@keyframes currentGlow {
+  0%, 100% {
+    box-shadow:
+      0 10px 0 #5a8d2f,
+      0 0 0 0 rgba(178, 246, 95, 0.7),
+      0 16px 30px rgba(0, 0, 0, 0.4),
+      inset 0 -3px 8px rgba(0, 0, 0, 0.2);
+  }
+  50% {
+    box-shadow:
+      0 10px 0 #5a8d2f,
+      0 0 0 15px rgba(178, 246, 95, 0),
+      0 16px 30px rgba(0, 0, 0, 0.4),
+      inset 0 -3px 8px rgba(0, 0, 0, 0.2);
+  }
+}
+
+/* Locked Node - Grayed Out */
+.map-node.locked {
+  background: linear-gradient(135deg, #5a5f6e 0%, #3a3f4e 50%, #2a2f3e 100%);
+  color: #8a8f9e;
+  cursor: not-allowed;
+  box-shadow:
+    0 10px 0 #1a1f2e,
+    0 16px 30px rgba(0, 0, 0, 0.3),
+    inset 0 -3px 8px rgba(0, 0, 0, 0.4);
+  filter: grayscale(0.5);
+}
+
+.map-node.locked:hover {
+  transform: none;
+}
+
+/* Node Label */
+.map-node-label {
+  max-width: 280px;
+  padding: 1rem 1.5rem;
+  border-radius: 20px;
+  background: rgba(15, 20, 30, 0.92);
+  border: 2px solid rgba(178, 246, 95, 0.2);
+  color: #e8f4f8;
+  font-family: Inter, 'Segoe UI', sans-serif;
+  font-size: 1rem;
+  line-height: 1.4;
+  box-shadow: 
+    0 12px 28px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+}
+
+.map-node-label strong {
+  color: #b2f65f;
+  font-weight: 700;
+}
+
+.map-node-number {
+  display: inline-block;
+  font-size: 1.5rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .challenge-map {
+    padding: 2rem 1rem 4rem;
+  }
+
+  .map-node-row.left,
+  .map-node-row.right {
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+
+  .map-node {
+    width: 75px;
+    height: 75px;
+    font-size: 1.2rem;
+  }
+
+  .map-node-label {
+    max-width: 200px;
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .map-topbar h2 {
+    font-size: 2rem;
+  }
+}
+
+
+
+/* ============================================
+   YOUTUBE TUTORIAL FEATURE
+   ADD THIS TO THE END OF ChallengePage.css
+   (after line 921 or at the very end)
+   ============================================ */
+
+/* Updated Nav Buttons Container */
+.nav-buttons {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+  transition: margin-bottom 0.6s ease;
+}
+
+.nav-buttons.tutorial-active {
+  margin-bottom: 0;
+}
+
+/* Tutorial Button - Matches Map Button Style */
+.tutorial-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1.75rem;
+  border: 3px solid #b2f65f;
+  border-radius: 50px;
+  background: linear-gradient(135deg, #1a1f2e 0%, #0f1419 100%);
+  color: #b2f65f;
+  font-family: java, monospace;
+  font-size: 1.1rem;
+  font-weight: 800;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.4),
+    0 0 20px rgba(178, 246, 95, 0.2),
+    inset 0 -3px 10px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  margin-left: auto;
+}
+
+.tutorial-button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(178, 246, 95, 0.15) 0%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.tutorial-button:hover {
+  transform: translateY(-1px) scale(1.01);
+  border-color: #d6ff9a;
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.5),
+    0 0 30px rgba(178, 246, 95, 0.4),
+    inset 0 -3px 10px rgba(0, 0, 0, 0.3);
+}
+
+.tutorial-button:hover::before {
+  opacity: 1;
+}
+
+.tutorial-button:active {
+  transform: translateY(-1px) scale(1.02);
+}
+
+/* Active state when video is showing */
+.tutorial-button.active {
+  background: linear-gradient(135deg, #b2f65f 0%, #8bc34a 100%);
+  color: #0a0e14;
+  border-color: #d6ff9a;
+  box-shadow:
+    0 4px 10px rgba(178, 246, 95, 0.4),
+    0 0 5px rgba(178, 246, 95, 0.5),
+    inset 0 -3px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* YouTube Play Icon */
+.yt-play-icon {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  background: #ff0000;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(255, 0, 0, 0.4);
+  transition: all 0.3s ease;
+}
+
+.tutorial-button:hover .yt-play-icon {
+  box-shadow: 0 4px 12px rgba(255, 0, 0, 0.6);
+  transform: scale(1.1);
+}
+
+/* Play triangle */
+.yt-play-icon::after {
+  content: '';
+  width: 0;
+  height: 0;
+  border-left: 8px solid #fff;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  margin-left: 2px;
+}
+
+/* Active state - changes to pause icon */
+.tutorial-button.active .yt-play-icon::after {
+  border: none;
+  width: 8px;
+  height: 10px;
+  background: 
+    linear-gradient(to right, #fff 0%, #fff 30%, transparent 30%, transparent 70%, #fff 70%, #fff 100%);
+  margin-left: 0;
+}
+
+/* YouTube Video Container */
+.youtube-video-container {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-top: 0;
+  opacity: 0;
+}
+
+.youtube-video-container.expanded {
+  max-height: 900px;
+  margin-top: 2rem;
+  opacity: 1;
+  transition: 
+    max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.4s ease 0.2s,
+    margin-top 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 0em 20em;
+}
+
+.youtube-video-wrapper {
+  background: linear-gradient(135deg, rgba(15, 20, 30, 0.95) 0%, rgba(10, 14, 20, 0.95) 100%);
+  border: 3px solid rgba(178, 246, 95, 0.3);
+  border-radius: 20px;
+  padding: 1.5rem;
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.6),
+    0 0 40px rgba(178, 246, 95, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  animation: videoSlideIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes videoSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.youtube-video-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid rgba(178, 246, 95, 0.2);
+}
+
+.youtube-video-title {
+  font-family: handwritten, Calibri, sans-serif;
+  font-size: 1.8rem;
+  color: #b2f65f;
+  margin: 0;
+  text-shadow: 0 0 20px rgba(178, 246, 95, 0.3);
+}
+
+.youtube-video-close {
+  padding: 0.6rem 1rem;
+  border-radius: 10px;
+  border: 2px solid #b2f65f;
+  background: linear-gradient(135deg, #1a1f2e 0%, #0f1419 100%);
+  color: #b2f65f;
+  font-family: java, monospace;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.youtube-video-close:hover {
+  background: linear-gradient(135deg, #242936 0%, #14181f 100%);
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+.youtube-video-close:active {
+  transform: scale(0.98);
+}
+
+/* YouTube Embed Wrapper */
+.youtube-embed-wrapper {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  height: 0;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #000;
+  box-shadow: 
+    0 10px 40px rgba(0, 0, 0, 0.8),
+    inset 0 0 0 1px rgba(178, 246, 95, 0.2);
+}
+
+.youtube-embed-wrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 12px;
+}
+
+.youtube-embed-wrapper iframe[src] + ::before {
+  display: none;
+}
+
+@media (max-width: 1420px) {
+  .youtube-video-container.expanded {
+    padding: 0 18em;
+  }
+}
+
+@media (max-width: 1320px) {
+  .youtube-video-container.expanded {
+    padding: 0 13em;
+  }
+}
+
+@media (max-width: 1220px) {
+  .youtube-video-container.expanded {
+    padding: 0 9em;
+  }
+}
+
+@media (max-width: 1120px) {
+  .youtube-video-container.expanded {
+    padding: 0 7em;
+  }
+}
+
+@media (max-width: 1020px) {
+  .youtube-video-container.expanded {
+    padding: 0;
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .tutorial-button {
+    margin-left: 0;
+    order: 3;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .youtube-video-container.expanded {
+    max-height: 400px;
+  }
+
+  .youtube-video-wrapper {
+    padding: 1rem;
+  }
+
+  .youtube-video-title {
+    font-size: 1.4rem;
+  }
+}
+
+/* Accessibility */
+.tutorial-button:focus-visible {
+  outline: 3px solid #b2f65f;
+  outline-offset: 4px;
+}
+
+.youtube-video-close:focus-visible {
+  outline: 2px solid #b2f65f;
+  outline-offset: 2px;
+}
+
+/* Smooth scroll behavior when video opens */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Add to your CSS */
+.youtube-embed-wrapper {
+  position: relative;
+}
+
+/* Hide YouTube UI overlays (not recommended - breaks functionality) */
+.youtube-embed-wrapper::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 150px;
+  height: 50px;
+  background: transparent;
+  pointer-events: none; /* Allows clicking through */
+  z-index: 10;
+}
