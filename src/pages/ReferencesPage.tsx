@@ -1,5 +1,6 @@
 import { useState } from "react"
 import BentoGrid from "../components/BentoGrid"
+import { useNavigate, Link } from "react-router-dom"
 import ReferenceModal from "../components/ReferenceModal"
 import { bentoBoxes } from "../data/referenceData"
 import type { ReferenceItem } from "../data/referenceData"
@@ -19,7 +20,7 @@ export default function ReferencesPage() {
     setCurrentBoxIndex((prev) => (prev === bentoBoxes.length - 1 ? 0 : prev + 1))
   }
 
-  return (
+  return <>
     <div className="references-page" style={{ backgroundImage: `url(${lofiBG})` }}>
       <div className="references-header">
         <h1>Python Reference</h1>
@@ -71,6 +72,17 @@ export default function ReferencesPage() {
           onClose={() => setSelectedTile(null)}
         />
       )}
+      <footer className="universal-footer">
+        <span className="footer-label">Trust & Safety</span>
+        <div className="footer-links">
+          <Link to="/privacy" className="footer-privacy-btn">
+            Privacy Policy (COPPA)
+          </Link>
+          <Link to="/terms" className="footer-privacy-btn">
+            Terms of Service
+          </Link>
+        </div>
+      </footer>
     </div>
-  )
+  </>
 }

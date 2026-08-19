@@ -103,6 +103,7 @@
   gap: 0.75rem;
   justify-content: center;
   margin-top: 2rem;
+  margin-bottom: 2rem;
 }
 
 .carousel-dot {
@@ -155,4 +156,71 @@
     width: 24px;
     height: 24px;
   }
+}
+/* Universal Footer Styles - Standardized */
+
+.universal-footer {
+  /* Break out of parent container padding */
+  width: 100vw;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  
+  /* Blended Background Strategy */
+  
+  
+  /* Layout & Spacing */
+  padding: 1.5rem 0 1rem 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  gap: 0.5rem;
+
+  /* Horizontal Divider Line */
+}
+
+/* Label above footer buttons */
+.footer-label {
+  font-family: 'space-grotesk', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0;
+}
+
+/* Button Container */
+.footer-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 0;
+  margin: 0;
+}
+
+/* Privacy & Terms Buttons */
+.footer-privacy-btn {
+  background: rgba(178, 246, 95, 0.1);
+  border: 1px solid rgba(178, 246, 95, 0.3);
+  color: #b2f65f;
+  padding: 0.35rem 0.9rem;
+  border-radius: 20px;
+  font-family: 'standard', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(8px);
+  margin: 0; /* Handled by container gap and padding */
+}
+
+.footer-privacy-btn:hover {
+  background: #b2f65f;
+  color: #0a0e1a;
+  transform: translateY(-2px);
 }

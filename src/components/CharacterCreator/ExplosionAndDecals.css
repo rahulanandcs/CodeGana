@@ -1,0 +1,253 @@
+/* ============================================
+   NOTE: Spiky explosion backgrounds, car-style decals
+   (flames, lightning, stripes, number plate), and
+   accessories (crown, visor) are now rendered as
+   inline SVG inside AvatarImage.tsx, using shared
+   anchor boxes (BACKGROUND_BOX, DECAL_BOX) so they
+   scale identically everywhere the avatar renders
+   (shop preview, header mini avatar, profile, etc).
+   ============================================ */
+
+/* CSS Shapes (Replacing Emojis) */
+.shape-icon {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin-right: 8px;
+}
+.shape-star {
+  background: #b2f65f;
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+.shape-square { background: #b2f65f; transform: rotate(45deg); }
+.shape-circle { background: #b2f65f; border-radius: 50%; }
+.shape-pencil {
+  position: relative;
+  width: 14px;
+  height: 14px;
+  transform: rotate(45deg);
+}
+
+/* Pencil body — hexagonal barrel tapering to a point, same green gradient */
+.shape-pencil::before {
+  content: '';
+  position: absolute;
+  top: 40%;
+  left: 0;
+  width: 100%;
+  height: 32%;
+  background: linear-gradient(90deg, #91ba38 0%, #b2f65f 60%, #b2f65f 100%);
+  clip-path: polygon(
+    0% 50%, 12% 0%, 100% 0%, 100% 100%, 12% 100%
+  );
+}
+
+/* Graphite tip — dark point at the sharpened end */
+.shape-pencil::after {
+  content: '';
+  position: absolute;
+  top: 40%;
+  left: -1px;
+  width: 14%;
+  height: 32%;
+  background: #dcffb1;
+  clip-path: polygon(0% 50%, 100% 0%, 100% 100%);
+}
+
+.shape-store {
+  background: #b2f65f;
+  clip-path: polygon(0% 40%, 10% 0%, 90% 0%, 100% 40%, 100% 100%, 0% 100%);
+  position: relative;
+  transform: translateY(2px);
+}
+.shape-store::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: 2px;
+  right: 2px;
+  height: 4px;
+  background: #b2f65f;
+  clip-path: polygon(0 100%, 15% 0, 85% 0, 100% 100%);
+}
+.shape-store::after {
+  content: '';
+  position: absolute;
+  left: 3px;
+  right: 3px;
+  bottom: 3px;
+  height: 3px;
+  background: #0f1419;
+  border-radius: 1px;
+}
+.shape-plain {
+  background: rgba(178, 246, 95, 0.85);
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  position: relative;
+  overflow: hidden;
+  transform: translateY(2px);
+}
+
+/* Profile icon head — small circle at top */
+.shape-plain::before {
+  content: '';
+  position: absolute;
+  top: 8%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 6px;
+  background: #0f1419;
+  border-radius: 50%;
+}
+
+/* Profile icon body — larger circle at bottom */
+.shape-plain::after {
+  content: '';
+  position: absolute;
+  bottom: -25%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12px;
+  height: 11px;
+  background: #0f1419;
+  border-radius: 50%;
+}
+
+
+
+/* ============================================
+   SIMPLE SCENE BACKGROUNDS
+   ============================================ */
+
+.scene-bg {
+  position: absolute;
+  inset: -25px;
+  z-index: 1;
+  pointer-events: none;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* ---------- DAYTIME: sun + grass ---------- */
+.scene-bg.scene-day {
+  background: linear-gradient(to bottom, #6ec6ff 0%, #a7e0ff 55%, #a7e0ff 60%, #7ed957 60%, #5cb946 100%);
+}
+.scene-bg.scene-day::before {
+  content: '';
+  position: absolute;
+  top: 14%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 26%;
+  height: 26%;
+  border-radius: 50%;
+  background: #ffe066;
+  box-shadow: 0 0 25px 8px rgba(255, 224, 102, 0.7);
+}
+.scene-bg.scene-day::after {
+  /* simple rolling hill */
+  content: '';
+  position: absolute;
+  bottom: -10%;
+  left: -10%;
+  width: 60%;
+  height: 30%;
+  border-radius: 50%;
+  background: #6bc94a;
+}
+
+/* ---------- NIGHTTIME: moon + dark sky + desert ---------- */
+.scene-bg.scene-night {
+  background: linear-gradient(to bottom, #0b1533 0%, #16205c 55%, #16205c 62%, #b8894f 62%, #8a6236 100%);
+}
+.scene-bg.scene-night::before {
+  /* crescent moon */
+  content: '';
+  position: absolute;
+  top: 14%;
+  right: 18%;
+  width: 20%;
+  height: 20%;
+  border-radius: 50%;
+  background: #f5f3e7;
+  box-shadow: -6px 0 0 0 #16205c inset, 0 0 15px 4px rgba(245, 243, 231, 0.5);
+}
+.scene-bg.scene-night::after {
+  /* two simple cacti */
+  content: '';
+  position: absolute;
+  bottom: 8%;
+  left: 20%;
+  width: 6%;
+  height: 22%;
+  background: #2f6b3a;
+  border-radius: 3px;
+  box-shadow: 30px 6px 0 -2px #2f6b3a, 30px 6px 0 -2px #2f6b3a,
+              55% 0px 0 -2px #2f6b3a;
+}
+
+/* ---------- TWILIGHT: twilight sky + forest ---------- */
+.scene-bg.scene-twilight {
+  background: linear-gradient(to bottom, #2b2560 0%, #6a3d8f 45%, #d4658a 65%, #d4658a 68%, #14210f 68%, #0d160a 100%);
+}
+.scene-bg.scene-twilight::before {
+  /* low glowing sun */
+  content: '';
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 22%;
+  height: 22%;
+  border-radius: 50%;
+  background: #ffb454;
+  box-shadow: 0 0 20px 6px rgba(255, 180, 84, 0.6);
+}
+.scene-bg.scene-twilight::after {
+  /* row of simple pine trees */
+  content: '';
+  position: absolute;
+  bottom: 6%;
+  left: 10%;
+  width: 0;
+  height: 0;
+  border-left: 6% solid transparent;
+  border-right: 6% solid transparent;
+  border-bottom: 20% solid #0f1f0c;
+  box-shadow: 18% 4% 0 0 #0f1f0c, 36% -2% 0 0 #0f1f0c,
+              54% 5% 0 0 #0f1f0c, 72% -1% 0 0 #0f1f0c;
+}
+
+/* ---------- DUSK: dusk sky + swamp ---------- */
+.scene-bg.scene-dusk {
+  background: linear-gradient(to bottom, #3c2a4d 0%, #a15a6b 50%, #d98a5f 65%, #d98a5f 68%, #33502e 68%, #24391f 100%);
+}
+.scene-bg.scene-dusk::before {
+  /* hazy sun low on horizon */
+  content: '';
+  position: absolute;
+  top: 52%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 24%;
+  height: 24%;
+  border-radius: 50%;
+  background: #ffa552;
+  opacity: 0.85;
+  box-shadow: 0 0 18px 5px rgba(255, 165, 82, 0.5);
+}
+.scene-bg.scene-dusk::after {
+  /* swamp reeds */
+  content: '';
+  position: absolute;
+  bottom: 8%;
+  left: 24%;
+  width: 2%;
+  height: 18%;
+  background: #4a6b3a;
+  border-radius: 2px;
+  box-shadow: 40px -4px 0 0 #4a6b3a, 70px 2px 0 0 #4a6b3a,
+              95px -6px 0 0 #4a6b3a;
+}

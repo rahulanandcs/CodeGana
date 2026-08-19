@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 import "./IndexPage.css"
 
 import blackDownDrip from "../images/blackDownDrip.png"
 import blackSkyBG from "../images/blackSkyBG.jpg"
-import CODE from "../images/CODE.png"
+import GANA from "../images/CGmascotLeft!.png"
 import trueDrip from "../images/trueDrip.png"
 import upGrafittiNew from "../images/upGrafittiNew.png"
 
@@ -171,7 +171,7 @@ useEffect(() => {
         <div className="hero-mascot" 
           style={{ transform: `translateY(${scrollY * 0.15}px)` }}
         >
-          <img src={CODE} alt="CodeGana Mascot" />
+          <img src={GANA} alt="CodeGana Mascot" />
         </div>
 
         <div className="hero-brush-text">
@@ -180,12 +180,12 @@ useEffect(() => {
 
         <div className="hero-bottom">
           <div className="hero-tagline">
-            <p>Master Your <span className="highlight-text">Coding Path</span></p>
+            <p>Ditch dry tutorials. Level up your <span className="highlight-text">coding skills</span></p>
           </div>
           
           <div className="hero-stats">
             <div className="stat-badge">
-              <span className="stat-number">12+</span>
+              <span className="stat-number">20+</span>
               <span className="stat-label">Challenges</span>
             </div>
             <div className="stat-badge">
@@ -401,7 +401,19 @@ useEffect(() => {
               </div>
             </div>
           </div>
+          
         </div>
+       <footer className="universal-footer">
+        <span className="footer-label">Trust & Safety</span>
+        <div className="footer-links">
+          <Link to="/privacy" className="footer-privacy-btn">
+            Privacy Policy (COPPA)
+          </Link>
+          <Link to="/terms" className="footer-privacy-btn">
+            Terms of Service
+          </Link>
+        </div>
+      </footer>
     </section>
 </div>
   )

@@ -1,0 +1,1090 @@
+.battle-page {
+  min-height: 100vh;
+  padding: 2rem;
+  background: radial-gradient(circle at center, #1e1e2f 0%, #0a0e14 100%);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 0rem;
+}
+
+.battle-header {
+  text-align: center;
+  /* margin-bottom: 2rem; */
+  z-index: 10;
+}
+
+.arena-title-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* aspect-ratio: 1; */
+  padding: 1.5rem;
+  border: 2px solid #b2f65f;
+  background: linear-gradient(135deg, #3d5c1f, #2a4015);
+  position: relative;
+  margin-bottom: 2rem;
+  transition: all 0.6s ease;
+}
+
+.arena-title-box h1 {
+  margin: 0;
+  font-family: 'handwritten', sans-serif;
+  font-size: clamp(1.5rem, 5vw, 2.5rem);
+  color: #d4ff7f;
+  text-shadow: 0 0 25px rgba(212, 255, 127, 0.8), 0 0 50px rgba(178, 246, 95, 0.4);
+  font-weight: 900;
+  letter-spacing: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Shrink title box on victory/defeat */
+.battle-page.state-won .arena-title-box,
+.battle-page.state-lost .arena-title-box {
+  transform: scale(0.75);
+  opacity: 0.9;
+  margin-bottom: 1rem;
+}
+
+.battle-page.state-won .arena-title-box h1,
+.battle-page.state-lost .arena-title-box h1 {
+  font-size: clamp(1rem, 3vw, 1.5rem);
+}
+
+/* Split line under the box */
+.arena-title-box::after {
+  content: '';
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 3px;
+  background-image: linear-gradient(
+    to right, 
+    rgb(178, 246, 95) 0%, 
+    rgb(178, 246, 95) calc(66.6% - 5px), 
+    transparent calc(66.6% - 5px), 
+    transparent calc(66.6% + 5px), 
+    rgb(178, 246, 95) calc(66.6% + 5px), 
+    rgb(178, 246, 95) 100%
+  );
+}
+
+.battle-header h1 {
+  font-family: 'handwritten', sans-serif;
+  font-size: 3.5rem;
+  color: #e6facd;
+  text-shadow: 0 0 20px rgba(178, 246, 95, 0.4);
+  margin: 0 0 0rem 0;
+}
+
+/* Difficulty Selector */
+.difficulty-selector-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.difficulty-title {
+  font-family: 'java', monospace;
+  font-size: 1.5rem;
+  color: #cfcfcf;
+  margin: 0;
+}
+
+.difficulty-buttons {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.diff-btn {
+  background: rgba(15, 20, 30, 0.8);
+  border: 4px outset #444;
+  color: #fff;
+  font-family: 'java', monospace;
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 0.8rem 2rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.diff-btn.selected {
+  border: 4px outset #b2f65f;
+  background: rgba(178, 246, 95, 0.15);
+  color: #b2f65f;
+  box-shadow: 0 0 15px rgba(178, 246, 95, 0.4);
+  transform: scale(1.05);
+}
+
+.queue-btn {
+  font-family: 'java', monospace;
+  font-size: 1.5rem;
+  font-weight: 900;
+  padding: 1rem 3rem;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  margin-top: 0rem;
+}
+
+.queue-btn.disabled {
+  background: #444;
+  color: #888;
+  cursor: not-allowed;
+}
+
+.queue-btn.active {
+  background: linear-gradient(135deg, #b2f65f 0%, #8bc34a 100%);
+  color: #000;
+  box-shadow: 0 10px 30px rgba(178, 246, 95, 0.3);
+}
+
+.queue-btn.active:hover {
+  transform: scale(1.05);
+}
+
+/* CSS Talwars */
+.talwar-display {
+  height: 160px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem 0 0 0;
+}
+
+.talwar {
+  width: 20px;
+  height: 120px;
+  background: linear-gradient(to bottom, #d4af37 0%, #d4af37 20%, #e0e0e0 20%, #a0a0a0 100%);
+  border-radius: 0 0 50% 50%;
+  position: relative;
+  box-shadow: -2px 0 5px rgba(0,0,0,0.5);
+  animation: swordDraw 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* Crossguard */
+.talwar::before {
+  content: '';
+  position: absolute;
+  top: 15%;
+  left: -16px;
+  width: 52px;
+  height: 8px;
+  background: #d4af37;
+  border-radius: 2px;
+}
+
+.single-talwar { transform: rotate(45deg); }
+
+.crossed-talwars {
+  position: relative;
+  width: 120px;
+  height: 120px;
+}
+
+.left-talwar {
+  position: absolute;
+  left: 50px;
+  transform: rotate(-45deg);
+}
+
+.right-talwar {
+  position: absolute;
+  left: 50px;
+  transform: rotate(45deg);
+}
+
+@keyframes swordDraw {
+  0% { opacity: 0; transform: translateY(-20px) rotate(0deg); }
+}
+
+/* Arena Layout Elements */
+.searching-pulse {
+  font-family: 'java', monospace;
+  color: #d6f0f2;
+  font-size: 1.2rem;
+  animation: pulse 1.5s infinite alternate;
+  margin-top: 2rem;
+}
+
+@keyframes pulse {
+  from { opacity: 0.5; text-shadow: 0 0 10px rgba(0, 242, 254, 0.2); }
+  to { opacity: 1; text-shadow: 0 0 20px rgba(0, 242, 254, 0.8); }
+}
+
+.arena-display {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 900px;
+  background: rgba(15, 20, 30, 0.8);
+  border: 2px solid rgba(178, 246, 95, 0.2);
+  border-radius: 20px;
+  padding: 1.5rem;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  z-index: 10;
+}
+
+.player-side, .opponent-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 30%;
+}
+
+.vs-badge {
+  font-family: 'handwritten', sans-serif;
+  font-size: 3rem;
+  color: #ff003c;
+  text-shadow: 0 0 15px rgba(255, 0, 60, 0.5);
+  font-weight: 900;
+}
+
+.health-bar-bg {
+  width: 100%;
+  height: 20px;
+  background: rgba(0, 0, 0, 0.8);
+  border: 3px outset #504e4e;
+  border-radius: 10px;
+  margin-top: 1rem;
+  overflow: hidden;
+}
+
+.health-bar-fill {
+  height: 100%;
+  transition: width 0.3s ease-out;
+}
+
+.my-health { background: #b2f65f; box-shadow: 0 0 10px #b2f65f; }
+.opponent-health { background: #ff003c; box-shadow: 0 0 10px #ff003c; }
+
+.health-text {
+  font-family: 'java', monospace;
+  margin-top: 0.5rem;
+  font-weight: bold;
+}
+
+.battle-workspace {
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  z-index: 10;
+}
+
+.battle-prompt {
+  background: rgba(0, 0, 0, 0.4);
+  padding: 1.5rem;
+  border: 3px inset #b2f65f;
+  border-radius: 8px;
+}
+
+.battle-prompt h3 {
+  margin: 0 0 0.5rem 0;
+  color: #b2f65f;
+  font-family: 'java', monospace;
+}
+
+.battle-prompt p {
+  margin: 1.0rem 0 0.25rem 0;
+  font-family: 'inter', monospace;
+  font-weight: 600;
+}
+
+.attack-btn {
+  background: rgb(144, 43, 43);
+  color: #fff;
+  border: none;
+  padding: 1rem;
+  font-family: 'java', monospace;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 5px 15px rgba(255, 0, 60, 0.4);
+  transition: all 0.2s;
+}
+
+.attack-btn:active {
+  transform: scale(0.98);
+  box-shadow: 0 2px 5px rgba(255, 0, 60, 0.4);
+}
+
+.battle-output {
+  background: #0a0e14;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid #333;
+  font-family: 'java', monospace;
+  color: #a7e0ff;
+  min-height: 100px;
+}
+
+/* PODIUM SCENE */
+.podium-scene {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* margin-top: 2rem; */
+  z-index: 20;
+}
+.podium-scene h2{
+  margin: 0rem 1rem;
+}
+.podium-base {
+  display: flex;
+  align-items: flex-end;
+  gap: 0;
+  margin-top: 2rem;
+  position: relative;
+}
+
+.podium-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.podium-avatar img { width: 150px; }
+
+.podium-block {
+  width: 140px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 1rem;
+  font-family: 'java', monospace;
+  font-size: 4rem;
+  font-weight: 900;
+  color: rgba(0,0,0,0.5);
+}
+
+.step-1st .podium-block { text-shadow: 0 0 10px #ffd90076, 0 0 5px #ffd9007c;  color: #ffd700;  height: 200px; border: 2px solid #ffd700;  background: linear-gradient(135deg, #304a16, #2a4015); }
+.step-2nd .podium-block { text-shadow: 0 0 10px #c0c0c063, 0 0 5px #c0c0c0;  color: #c0c0c0;  height: 130px; border: 2px solid #c0c0c0;  background: linear-gradient(135deg, #3d5c1f, #2a4015); }
+
+/* Elephant Effects ffd700 c0c0c0*/
+.elephant-spectator {
+  position: absolute;
+  right: -120px;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  transition: all 2s ease;
+}
+
+.mascot-image {
+  height: 120px;
+  object-fit: contain;
+  animation: mascotBounce 3s ease-in-out infinite;
+}
+
+@keyframes mascotBounce {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-1px); }
+}
+
+.dust-fade {
+  opacity: 0;
+  transform: translateY(20px) scale(0.9);
+  filter: blur(10px);
+}
+
+.victory-text { color: #b2f65f; font-size: 4rem; text-shadow: 0 0 30px #b2f65f; font-family: 'handwritten', sans-serif; }
+.defeat-text { color: #ff003c; font-size: 4rem; text-shadow: 0 0 30px #ff003c; font-family: 'handwritten', sans-serif;}
+
+/* WEATHER EFFECTS */
+/* ==========================================
+   FIREWORKS EFFECT (SMOOTH & FIXED SYNC)
+   ========================================== */
+.fireworks-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 15;
+}
+
+.firework-shell {
+  position: absolute;
+  bottom: 0;
+  width: 4px;
+  height: 100%;
+}
+
+.shell-1 {
+  left: 30%;
+  color: #b2f65f;
+}
+
+.shell-2 {
+  left: 70%;
+  color: #ffd700;
+}
+
+/* Rocket Launch Trail */
+.shell-1 .firework-trail,
+.shell-1 .firework-burst span {
+  animation: launchRocket 2.8s cubic-bezier(0.2, 0.7, 0.4, 1) infinite;
+  animation-delay: 0s;
+}
+
+.shell-2 .firework-trail,
+.shell-2 .firework-burst span {
+  animation: launchRocket 2.8s cubic-bezier(0.2, 0.7, 0.4, 1) infinite;
+  animation-delay: 1.4s; /* Perfect half-cycle offset */
+}
+
+.firework-trail {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 3px;
+  height: 70px;
+  background: linear-gradient(to top, transparent, currentColor);
+  border-radius: 2px;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+@keyframes launchRocket {
+  0% {
+    transform: translateX(-50%) translateY(0) scaleY(1);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  38% {
+    opacity: 0.8;
+  }
+  45% {
+    transform: translateX(-50%) translateY(-50vh) scaleY(0.3);
+    opacity: 0; /* Fully dissolved before burst starts */
+  }
+  100% {
+    transform: translateX(-50%) translateY(-50vh) scaleY(0.3);
+    opacity: 0;
+  }
+}
+
+/* Burst Container */
+.firework-burst {
+  position: absolute;
+  bottom: 50vh;
+  left: 50%;
+  transform: translate(-50%, -35px);
+  width: 0;
+  height: 0;
+}
+
+/* Hardware-Accelerated Smooth Line Rays */
+.firework-burst span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 20px;
+  background: linear-gradient(to top, transparent, currentColor, #fff);
+  border-radius: 2px;
+  transform-origin: bottom center;
+  opacity: 0;
+  will-change: transform, opacity;
+  animation-name: bloomRay !important;
+}
+
+@keyframes bloomRay {
+  0%, 45% {
+    opacity: 0;
+    transform: rotate(var(--angle)) translateY(0) scaleY(0.2);
+  }
+  48% {
+    opacity: 1;
+    transform: rotate(var(--angle)) translateY(5px) scaleY(1);
+  }
+  65% {
+    opacity: 0.9;
+    transform: rotate(var(--angle)) translateY(-55px) scaleY(1.3);
+  }
+  /* Smooth, non-laggy dissolve with slight downward gravity drift */
+  90% {
+    opacity: 0.15;
+    transform: rotate(var(--angle)) translateY(-85px) scaleY(0.6);
+  }
+  100% {
+    opacity: 0;
+    transform: rotate(var(--angle)) translateY(-95px) scaleY(0.1);
+  }
+}
+
+.opponent-side img {
+    width: 200px;
+  }
+/* ==========================================
+   RAIN & GRAY CLOUDS EFFECT
+   ========================================== */
+
+/* ==========================================
+   RAIN & GRAY CLOUDS EFFECT (ASYNC & BALANCED)
+   ========================================== */
+.rain-container {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(10, 15, 25, 0.6), rgba(0, 0, 10, 0.85));
+  pointer-events: none;
+  z-index: 15;
+}
+
+/* Rain Layer 1 (Fast Main Drops - Leftmost 5vw removed) */
+.rain-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 80px;
+  background: #a7e0ff;
+  border-radius: 2px;
+  box-shadow: 
+    12vw 60px #a7e0ff,
+    23vw -10px #a7e0ff,
+    35vw 20px #a7e0ff,
+    48vw -80px #a7e0ff,
+    58vw -30px #a7e0ff,
+    71vw -50px #a7e0ff,
+    84vw 30px #a7e0ff,
+    95vw 10px #a7e0ff;
+  animation: rainDrop 0.65s linear infinite;
+}
+
+/* Rain Layer 2 (Slower Off-Phase Drops for Asynchronous Depth) */
+.rain-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 65px;
+  background: rgba(167, 224, 255, 0.6);
+  border-radius: 2px;
+  box-shadow: 
+    18vw 120px rgba(167, 224, 255, 0.6),
+    29vw 10px rgba(167, 224, 255, 0.6),
+    41vw 90px rgba(167, 224, 255, 0.6),
+    52vw 140px rgba(167, 224, 255, 0.6),
+    64vw 40px rgba(167, 224, 255, 0.6),
+    78vw 110px rgba(167, 224, 255, 0.6),
+    89vw -20px rgba(167, 224, 255, 0.6);
+  animation: rainDrop 0.85s linear infinite;
+  animation-delay: -0.32s; /* Off-phase offset makes timing asynchronous */
+}
+
+@keyframes rainDrop {
+  0% { 
+    transform: translateY(-120px); 
+    opacity: 0; 
+  }
+  25% { 
+    opacity: 0.85; 
+  }
+  100% { 
+    transform: translateY(100vh); 
+    opacity: 0; 
+  }
+}
+
+/* Gray CSS Clouds */
+.rain-cloud {
+  position: absolute;
+  top: 90px; /* Moved slightly down so it's fully visible */
+  width: 170px;
+  height: 50px;
+  background: #5a6578; /* Slightly lighter gray for high contrast */
+  border-radius: 50px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8);
+  opacity: 0.95;
+  z-index: 25; /* Higher than podium-scene (20) so clouds stay crisp on top! */
+}
+
+.rain-cloud::before,
+.rain-cloud::after {
+  content: '';
+  position: absolute;
+  background: #5a6578;
+  border-radius: 50%;
+}
+
+.rain-cloud::before {
+  width: 75px;
+  height: 75px;
+  top: -35px;
+  left: 25px;
+}
+
+.rain-cloud::after {
+  width: 60px;
+  height: 60px;
+  top: -25px;
+  right: 25px;
+}
+
+.cloud-left {
+  left: 6%;
+  animation: cloudFloatLeft 4s ease-in-out infinite alternate;
+}
+
+.cloud-right {
+  right: 6%;
+  animation: cloudFloatRight 4s ease-in-out infinite alternate;
+}
+
+@keyframes cloudFloatLeft {
+  from { transform: translateX(0px); }
+  to { transform: translateX(20px); }
+}
+
+@keyframes cloudFloatRight {
+  from { transform: translateX(0); }
+  to { transform: translateX(-20px); }
+}
+
+.play-again-btn {
+  margin-top: 3rem;
+  z-index: 25;
+  box-shadow: 0 0 20px rgba(178, 246, 95, 0.5);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.play-again-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 30px rgba(178, 246, 95, 0.8);
+}
+
+@media (max-width: 600px) {
+  /* Make the title box fit the screen and be smaller */
+  .arena-title-box {
+    width: 90% !important;
+    max-width: 350px !important;
+    margin: 10px auto !important;
+    padding: 10px !important;
+    box-sizing: border-box !important;
+  }
+
+  .arena-title-box h1 {
+    font-size: 1.8rem !important;
+    margin: 0 !important;
+    text-align: center !important;
+  }
+
+  /* Increase horizontal margins for basic and intermediate buttons */
+  .difficulty-buttons {
+    display: flex !important;
+    justify-content: center !important;
+    gap: 20px !important;
+    margin: 20px 0 !important;
+  }
+
+  .diff-btn {
+    margin: 0 15px !important; /* Larger horizontal margins */
+    padding: 10px 20px !important;
+    flex: 0 1 auto !important;
+  }
+
+  /* Ensure display box has consistent margins */
+  .talwar-display {
+    margin: 20px 15px !important;
+    width: auto !important;
+  }
+
+  .opponent-side img {
+    width: 100px;
+  }
+  /* Ensure the player's avatar wrapper is 100px */
+  .player-side .avatar-wrapper {
+    width: 100px !important;
+    height: 100px !important;
+    position: relative !important;
+    display: inline-block !important;
+  }
+
+  /* Force the background and profile image to fill the 100px container */
+  .player-side .avatar-wrapper svg:first-child,
+  .player-side .avatar-image {
+    width: 100% !important;
+    height: 100% !important;
+    inset: 0 !important;
+  }
+
+  /* Upscale shop items slightly to maintain visibility on the smaller container */
+  .player-side .avatar-wrapper svg[viewBox="0 0 36 36"] {
+    width: 25% !important; /* Fire/Pet */
+    height: 25% !important;
+  }
+
+  .player-side .avatar-wrapper svg[viewBox="0 0 100 60"] {
+    width: 40% !important; /* Crown */
+    height: 30% !important;
+    top: -10% !important; /* Adjustment for placement on the head */
+  }
+  /* 1. Fix truncated "1v1 Code Arena" text */
+  .arena-title-box {
+    width: 100% !important;
+    
+    display: flex !important;
+    justify-content: center !important;
+    padding: 10px 20px !important;
+  }
+  
+  .arena-title-box h1 {
+    white-space: normal !important; /* Allows text to wrap or expand fully */
+    text-overflow: clip !important; /* Removes the "..." ellipsis */
+    overflow: visible !important;
+    width: auto !important;
+    text-align: center !important;
+  }
+
+  /* 2. Force battle-output text to wrap around */
+  .battle-output, 
+  .battle-output * {
+    white-space: pre-wrap !important; /* Preserves line breaks but wraps lines */
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+    max-width: 100% !important;
+  }
+
+  .arena-display {
+    margin-top: 2rem;
+    padding: 1rem;
+  }
+
+  .battle-page {
+    padding: 0.5rem;
+    padding-bottom: 2rem;
+    padding-top: 1rem;
+  }
+
+  .universal-foote {
+  }
+
+  .footer-links {
+    gap: 0rem;
+  }
+}
+
+/* Universal Footer Styles - Standardized */
+
+.universal-foote {
+  /* Break out of parent container padding */
+  width: 100vw;
+  /* Blended Background Strategy */
+
+  /* Layout & Spacing */
+  padding: 1.5rem 0 1rem 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  gap: 0.5rem;
+  /* Horizontal Divider Line */
+  padding-top: 4rem;
+}
+
+.universal-foote {
+  margin-left: 0px;
+  width: 100%;
+}
+
+/* Label above footer buttons */
+.footer-label {
+  font-family: 'space-grotesk', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0;
+}
+
+/* Button Container */
+.footer-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 0;
+  margin: 0;
+}
+
+/* Privacy & Terms Buttons */
+.footer-privacy-btn {
+  background: rgba(178, 246, 95, 0.1);
+  border: 1px solid rgba(178, 246, 95, 0.3);
+  color: #b2f65f;
+  padding: 0.35rem 0.9rem;
+  border-radius: 20px;
+  font-family: 'standard', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(8px);
+  margin: 0; /* Handled by container gap and padding */
+}
+
+.footer-privacy-btn:hover {
+  background: #b2f65f;
+  color: #0a0e1a;
+  transform: translateY(-2px);
+}
+
+/* ==========================================
+   IDLE ARENA HUB DESIGN (Responsive Grid)
+   ========================================== */
+.idle-arena-hub {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 1200px;
+  margin-top: 1rem;
+  z-index: 10;
+}
+
+.arena-panel {
+  background: rgba(15, 20, 30, 0.85);
+  border: 2px solid rgba(178, 246, 95, 0.2);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Mobile Ordering: Center -> Right -> Left */
+@media (max-width: 1023px) {
+  .difficulty-card-panel { order: 1; }
+  .rank-history-panel { order: 2; }
+  .arena-rules-panel { order: 3; }
+}
+
+/* Desktop Grid: 3 Columns */
+@media (min-width: 1024px) {
+  .idle-arena-hub {
+    display: grid;
+    grid-template-columns: 280px 1fr 280px;
+    align-items: stretch;
+  }
+}
+
+/* --- Left Panel: Rules --- */
+.arena-rules-panel h3 {
+  font-family: 'java', monospace;
+  color: #b2f65f;
+  margin-top: 0;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.rules-text {
+  font-size: 0.95rem;
+  color: #d0d0d0;
+  line-height: 1.6;
+  text-align: left;
+  margin: 0;
+  font-family: 'inter', sans-serif;
+}
+
+/* --- Center Panel: Difficulty Cards --- */
+.difficulty-card-panel {
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.difficulty-cards-grid {
+  display: flex;
+  gap: 1.5rem;
+  width: 100%;
+  justify-content: center;
+}
+
+.diff-card {
+  flex: 1;
+  max-width: 200px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 1.25rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.diff-card:hover {
+  border-color: rgba(178, 246, 95, 0.5);
+  transform: translateY(-4px);
+}
+
+.diff-card.selected {
+  border-color: #b2f65f;
+  background: rgba(178, 246, 95, 0.1);
+  box-shadow: 0 0 20px rgba(178, 246, 95, 0.25);
+}
+
+.card-badge {
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  background: #2a4015;
+  color: #b2f65f;
+  padding: 0.2rem 0.6rem;
+  border-radius: 10px;
+  letter-spacing: 1px;
+}
+
+.card-badge.hard {
+  background: #5a1f1f;
+  color: #ff6b6b;
+}
+
+.diff-card h4 {
+  margin: 0.5rem 0;
+  font-family: 'java', monospace;
+  font-size: 1.1rem;
+}
+
+.talwar-display-small {
+  transform: scale(0.6);
+  height: 80px;
+  margin-top: -10px;
+}
+
+/* --- Right Panel: Rank & W/L History --- */
+.rank-history-panel h3 {
+  font-family: 'java', monospace;
+  color: #b2f65f;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+}
+
+.rank-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+/* CSS Gem Shapes for Ranks */
+.rank-symbol {
+  width: 50px;
+  height: 50px;
+  margin-bottom: 1rem;
+  transform: rotate(45deg);
+  border-radius: 8px;
+  box-shadow: inset 0 0 15px rgba(255,255,255,0.3), 0 0 20px currentColor;
+}
+
+.rank-unranked { background: #444; color: #444; box-shadow: inset 0 0 5px rgba(0,0,0,0.5); }
+.rank-bronze { background: linear-gradient(135deg, #cd7f32, #8b4513); color: #cd7f32; }
+.rank-silver { background: linear-gradient(135deg, #e5e4e2, #999); color: #c0c0c0; }
+.rank-gold { background: linear-gradient(135deg, #ffd700, #b8860b); color: #ffd700; }
+.rank-platinum { background: linear-gradient(135deg, #00e5ff, #0088cc); color: #00e5ff; border: 2px solid #fff; }
+.rank-diamond { background: linear-gradient(135deg, #b9f2ff, #0055ff); color: #0055ff; border: 2px solid #fff; }
+
+.rank-title {
+  font-family: 'java', monospace;
+  font-size: 1.4rem;
+  margin: 0 0 0.25rem 0;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.rank-unranked-text { color: #888; }
+.rank-bronze-text { color: #cd7f32; text-shadow: 0 0 10px rgba(205, 127, 50, 0.5); }
+.rank-silver-text { color: #e5e4e2; text-shadow: 0 0 10px rgba(229, 228, 226, 0.5); }
+.rank-gold-text { color: #ffd700; text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+.rank-platinum-text { color: #00e5ff; text-shadow: 0 0 10px rgba(0, 229, 255, 0.5); }
+.rank-diamond-text { color: #b9f2ff; text-shadow: 0 0 10px rgba(185, 242, 255, 0.5); }
+
+.arena-points-text {
+  font-size: 0.8rem;
+  color: #a0a0a0;
+  margin: 0;
+}
+
+/* W/L History Badges */
+.recent-matches {
+  width: 100%;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 1rem;
+}
+
+.recent-label {
+  font-size: 0.8rem;
+  color: #aaa;
+  text-transform: uppercase;
+  margin: 0 0 0.75rem 0;
+}
+
+.match-history-row {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.no-matches-text {
+  font-size: 0.8rem;
+  color: #666;
+  font-style: italic;
+}
+
+.match-badge {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font-weight: 900;
+  font-family: 'java', monospace;
+  font-size: 1.1rem;
+}
+
+.badge-w {
+  background: rgba(178, 246, 95, 0.15);
+  color: #b2f65f;
+  border: 2px solid #b2f65f;
+  box-shadow: 0 0 10px rgba(178, 246, 95, 0.4);
+}
+
+.badge-l {
+  background: rgba(255, 0, 60, 0.15);
+  color: #ff003c;
+  border: 2px solid #ff003c;
+  box-shadow: 0 0 10px rgba(255, 0, 60, 0.4);
+}

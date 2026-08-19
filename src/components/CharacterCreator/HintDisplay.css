@@ -1,0 +1,272 @@
+/* Hint Display - Correct Implementation *
+/* Hint Button - Same formatting as tutorial button */
+
+.hint-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1.5rem;
+  border: outset;
+  border-color: #b2f65f;
+  border-radius: 50px;
+  background: transparent;
+  color: #b2f65f;
+  font-family: java, monospace;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-left: auto !important;
+  margin-right: 0 !important;
+}
+
+.hint-button:hover {
+  background: linear-gradient(135deg, rgba(178, 246, 95, 0.15) 0%, rgba(139, 195, 74, 0.1) 100%);
+  transform: translateY(-2px);
+  border-color: #d6ff9a;
+  transition: all 0.3s ease;
+}
+
+.hint-button:active {
+  transform: translateY(0);
+}
+
+.hint-button.active {
+  background: linear-gradient(135deg, rgba(178, 246, 95, 0.25) 0%, rgba(139, 195, 74, 0.15) 100%);
+  color: #d6ff9a;
+}
+
+/* Lightbulb Icon */
+.hint-icon {
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.hint-icon::before {
+  content: '';
+  width: 24px;
+  height: 24px;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23b2f65f"><path d="M9 21c0 .5.4 1 1 1h4c.6 0 1-.5 1-1v-1H9v1zm3-20C9.1 1 6 4.1 6 8c0 2.7-1.3 5-3 6.5V17c0 .5.5 1 1 1h16c.5 0 1-.5 1-1v-2.5c-1.7-1.5-3-3.9-3-6.5 0-3.9-3.1-7-7-7zm0 2c2.8 0 5 2.2 5 5 0 2.8-2.2 5-5 5s-5-2.2-5-5c0-2.8 2.2-5 5-5z"/></svg>');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+/* Hint Display - Full page with elephant and bubble */
+.hint-display {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  z-index: 999;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease;
+}
+
+.hint-display-visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.hint-display-closing {
+  opacity: 0;
+  visibility: visible;
+}
+
+/* Elephant Container - Right side of screen */
+.hint-elephant-container {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: auto;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Elephant Image - Tilted left, right edge touches screen edge */
+.hint-elephant-image {
+  width: auto;
+  height: 50%;
+  object-fit: contain;
+  transform: rotate(-10deg) translateX(0%);
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
+  animation: elephantSlideIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.hint-display-closing .hint-elephant-image {
+  animation: elephantSlideOut 0.28s ease-in forwards;
+}
+
+@keyframes elephantSlideIn {
+  from {
+    opacity: 0;
+    transform: rotate(-10deg) translateX(100px);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(-10deg) translateX(0%);
+  }
+}
+
+@keyframes elephantSlideOut {
+  from {
+    opacity: 1;
+    transform: rotate(-10deg) translateX(0%);
+  }
+  to {
+    opacity: 0;
+    transform: rotate(-10deg) translateX(100px);
+  }
+}
+
+/* Cloud Speech Bubble */
+.hint-speech-bubble {
+  position: absolute;
+  left: -16rem;
+  top: 15%;
+  transform: translateY(-50%);
+  background: rgba(224, 232, 245, 0.975);
+  padding: 1rem;
+  max-width: 480px;
+  min-width: 280px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+  z-index: 3;
+  pointer-events: auto;
+  animation: cloudSlideIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) 0.05s both;
+  border: #a8a9aa 3px solid;
+  /* Cloud shape using border-radius */
+  border-radius: 15px;
+  position: relative;
+}
+
+.hint-display-closing .hint-speech-bubble {
+  animation: cloudSlideOut 0.3s ease-in forwards;
+}
+
+@keyframes cloudSlideIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.6) translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes cloudSlideOut {
+  0% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.9) translateY(10px);
+  }
+}
+
+/* Hint Bubble Text */
+.hint-bubble-text {
+  color: #2a2d34;
+  font-family: 'handwritten', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-size: 1.2rem;
+  line-height: 1.7;
+  margin: 0;
+  font-weight: 700;
+  position: relative;
+  z-index: 1;
+}
+
+p.hint-bubble-text {
+  font-family: gummy, sans-serif;
+}
+
+/* Triangle Pointer - Points to elephant (right side of bubble) */
+.hint-bubble-triangle {
+  position: absolute;
+  right: -20px;
+  top: 50%;
+  transform: translateY(-140%);
+  width: 0;
+  height: 0;
+  border-left: 20px solid rgba(15, 20, 30, 0.9);
+  border-top: 15px solid transparent;
+  border-bottom: 15px solid transparent;
+  z-index: 2;
+  border-left-color: #a8a9aa;
+  background-color: transparent;
+}
+
+
+
+
+
+
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .hint-speech-bubble {
+    max-width: 400px;
+  }
+
+  .hint-elephant-image {
+    height: 40%;
+  }
+
+  .hint-speech-bubble {
+    left: -13rem;
+  }
+
+
+}
+
+@media (max-width: 708px) {
+  .hint-bubble-text {
+    font-size: 1em;
+  }
+
+  .hint-speech-bubble {
+    margin-left: 10vw;
+    left: auto;
+    max-width: 240px;
+    min-width: 240px;
+    left: -11rem;
+  }
+
+  .hint-elephant-image {
+    height: 250px;
+  }
+}
+
+@media (max-width: 600px) {
+  .hint-bubble-text {
+    font-size: 1em;
+  }
+
+  .hint-speech-bubble {
+    max-width: 240px;
+    min-width: 240px;
+    top: 7rem;
+    left: -4rem;
+  }
+
+  .hint-elephant-image {
+    height: 210px;
+  }
+  .hint-button {
+    width: 100%;
+    justify-content: center;
+  }
+}

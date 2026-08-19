@@ -1,0 +1,286 @@
+/* PrivacyPolicy.css - CodeGana Theme */
+
+.privacy-page-container {
+  min-height: 100vh;
+  background-color: #0a0e1a;
+  color: #e2e8f0;
+  padding: 1.5rem 1rem;
+  font-family: 'inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+@media (min-width: 640px) {
+  .privacy-page-container {
+    padding: 4rem 1.5rem;
+  }
+}
+
+.privacy-card {
+  max-width: 56rem;
+  margin: 0 auto;
+  background-color: rgba(26, 22, 37, 0.9);
+  border: 2px solid rgba(178, 246, 95, 0.3);
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+  box-shadow: 0 0 50px rgba(178, 246, 95, 0.1);
+  backdrop-filter: blur(12px);
+}
+
+@media (min-width: 640px) {
+  .privacy-card {
+    padding: 3rem;
+  }
+}
+
+/* Header Styles */
+.privacy-header {
+  border-bottom: 1px solid rgba(178, 246, 95, 0.2);
+  padding-bottom: 2rem;
+}
+
+.privacy-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.privacy-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background-color: rgba(178, 246, 95, 0.15);
+  color: #b2f65f;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border: 1px solid rgba(178, 246, 95, 0.3);
+}
+
+.back-home-link {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #ccd5e1;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.back-home-link:hover {
+  color: #b2f65f;
+}
+
+.privacy-title {
+  font-size: 2rem;
+  font-weight: 900;
+  color: #ffffff;
+  letter-spacing: -0.025em;
+  font-family: 'standard', sans-serif;
+}
+
+@media (min-width: 640px) {
+  .privacy-title {
+    font-size: 3rem;
+  }
+}
+
+.brand-highlight {
+  color: #b2f65f;
+  filter: drop-shadow(0 0 15px rgba(178, 246, 95, 0.4));
+}
+
+.privacy-meta {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-size: 0.875rem;
+  color: #ccd5e1;
+  font-family: monospace;
+}
+
+.privacy-meta p {
+    margin-bottom: 0rem;
+}
+
+.privacy-intro {
+  font-size: 1.125rem;
+  color: #cbd5e1;
+  line-height: 1.75;
+  margin-bottom: 2rem;
+}
+
+/* Guarantee / Highlights Box */
+.guarantee-box {
+  background-color: rgba(10, 14, 26, 0.8);
+  border: 1px solid rgba(178, 246, 95, 0.3);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.guarantee-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #b2f65f;
+  margin-top: 0rem;
+  margin-bottom: 1rem;
+}
+
+.guarantee-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 0.875rem;
+  color: #cbd5e1;
+}
+
+@media (min-width: 768px) {
+  .guarantee-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.check-mark {
+  color: #b2f65f;
+  font-weight: bold;
+  margin-right: 0.5rem;
+}
+
+/* Sections & Content */
+.privacy-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.privacy-section {
+  margin-bottom: 0rem;
+}
+
+.section-heading {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #b2f65f;
+  border-bottom: 1px solid #1e293b;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.section-desc {
+  margin-bottom: 1rem;
+  color: #cbd5e1;
+}
+
+.content-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.content-box {
+  background-color: rgba(10, 14, 26, 0.6);
+  padding: 1rem 1.25rem;
+  border-radius: 0.75rem;
+  border: 1px solid #1e293b;
+}
+
+.box-heading {
+  font-weight: 600;
+  color: #ffffff;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.sub-heading {
+  font-weight: 600;
+  color: #e2e8f0;
+  margin-top: 0rem;
+  margin-bottom: 0.25rem;
+}
+
+.sub-text {
+  font-size: 0.875rem;
+  color: #ccd5e1;
+}
+
+.warning-callout {
+  margin-top: 1rem;
+  font-size: 0.75rem;
+  background-color: rgba(211, 8, 8, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  color: #ff8b8b;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+}
+
+.inline-code {
+  color: #b2f65f;
+  background-color: #0f172a;
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  border: 1px solid rgba(178, 246, 95, 0.2);
+  font-family: monospace;
+}
+
+/* Lists and Links */
+.privacy-list {
+  list-style-type: disc;
+  padding-left: 1.25rem;
+  margin-top: 0.5rem;
+}
+
+.privacy-list li {
+  margin-bottom: 0.5rem;
+  color: #ccd5e1;
+  font-size: 0.875rem;
+}
+
+.privacy-ordered-list {
+  list-style-type: decimal;
+  padding-left: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  color: #cbd5e1;
+}
+
+.contact-card {
+  background-color: #0a0e1a;
+  padding: 0.5rem 1.5rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(178, 246, 95, 0.3);
+}
+
+.contact-heading {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #b2f65f;
+  margin-bottom: 0.5rem;
+}
+
+.contact-desc {
+  font-size: 0.875rem;
+  color: #ccd5e1;
+  margin-bottom: 1rem;
+}
+
+.contact-info {
+  font-size: 0.875rem;
+  font-family: monospace;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.privacy-link {
+  color: #b2f65f;
+  text-decoration: underline;
+  transition: color 0.2s ease;
+}
+
+.privacy-link:hover {
+  color: #ffffff;
+}

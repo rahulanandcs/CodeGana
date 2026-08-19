@@ -1,13 +1,18 @@
 import { useEffect, useState, useRef } from "react"
+import { useNavigate, Link } from "react-router-dom"
 import CodeEditor from "../components/CodeEditor"
 import InputBox from "../components/InputBox"
 import { usePyodide } from "../hooks/usePyodide"
-import { runPython } from "../engine/pythonRunner"
+// import { runPython } from "../engine/pythonRunner"
+import { trackEvent } from '../lib/analytics'
+
 import { challenges } from "../data/challenges"
 import { OutputPanel } from "../components/OutputPanel"
+import HintDisplay from '../components/CharacterCreator/HintDisplay'
 import "./ChallengePage.css"
 
 import spaceBG from "../images/starBG.jpg"
+import elephantLeft from '../images/CGhint_facingLeft!.png'
 
 type ChallengePageProps = {
   xp: number
@@ -21,23 +26,64 @@ type ChallengePageProps = {
   updateStreak: (todayDate?: string) => void
 }
 
+// Helper function to detect universal beginner mistakes in Python code & output
+function getUniversalMascotHint(code: string, userOut: string, expected: string): string | null {
+  if (userOut.includes("TimeoutError")) {
+    return "Your code got stuck and took too long to run! Did you accidentally create an infinite loop? Check your 'while' or 'for' loops!";
+  }
+  
+  // 1. Semicolon Check
+  if (code.includes(";")) {
+    return "In Python, you don't need semicolons (;) at the end of your lines! Try removing them.";
+  }
+
+  // 2. Forgotten print() check
+  if (userOut === "") {
+    return "Your program didn't print anything! Did you forget to use print(...) to output your answer?";
+  }
+
+  // 3. Case Sensitivity Check (e.g., 'hello world' vs 'Hello World')
+  if (userOut.toLowerCase() === expected.toLowerCase() && userOut !== expected) {
+    return "Watch your capitalization! Your text matches, but check your Upper and Lower case letters (e.g., 'Hello World' instead of 'hello world').";
+  }
+
+  // 4. Extra Quotes Printed Check (e.g., printing "'Hello World'" instead of "Hello World")
+  if (userOut === `'${expected}'` || userOut === `"${expected}"`) {
+    return "Don't print quotes around your text! print('Hello World') already outputs Hello World without quotes.";
+  }
+
+  // 5. Whitespace / Spacing Check
+  if (userOut.replace(/\s+/g, "") === expected.replace(/\s+/g, "")) {
+    return "You are super close! Double-check your spaces and newlines—your output has extra or missing spaces.";
+  }
+
+  return null; // Fall back to challenge-specific test case hint
+}
+
 export default function ChallengePage({
   setXp,
   completed,
   setCompleted,
   updateStreak
 }: ChallengePageProps) {
-  const { pyodide, loading } = usePyodide()
+  const { runPython, loading } = usePyodide()
 
   const [currentIndex, setCurrentIndex] = useState(0)
   const [userCode, setUserCode] = useState<Record<number, string>>({})
   const [userInput, setUserInput] = useState<Record<number, string>>({})
   const [output, setOutput] = useState("")
   const [showExplanation, setShowExplanation] = useState(false)
+
+  const [mapFilter, setMapFilter] = useState<string>("all")
+
+  // NEW: State to track if the mascot should appear and what it should say
+  const [mascotHint, setMascotHint] = useState<string | null>(null)
+
   const [showMap, setShowMap] = useState(false) // update 1.1
   const [showTutorial, setShowTutorial] = useState(false) // update 1.1
   const tutorialRef = useRef<HTMLDivElement>(null) // update 1.1
 
+  const pageBottomAnchorRef = useRef<HTMLDivElement>(null)
 
   const runButtonRef = useRef<HTMLButtonElement>(null)
   const lightningRefs = useRef<(HTMLDivElement | null)[]>([])
@@ -75,6 +121,57 @@ export default function ChallengePage({
       }
     })
   }
+  
+  // track stuff
+  trackEvent('Challenge_Completed', { challengeId: currentChallenge.id })
+
+  function showMascotHint(nextHint: string | null) {
+    setMascotHint(null)
+
+    if (!nextHint) return
+
+    window.setTimeout(() => {
+      setMascotHint(nextHint)
+    }, 120)
+  }
+
+function scrollToChallengeEnd() {
+  setTimeout(() => {
+    if (!pageBottomAnchorRef.current) return;
+
+    const startY = window.scrollY;
+    
+    // Calculate position of the anchor tag minus viewport height to place it nicely near the bottom
+    const anchorTop = pageBottomAnchorRef.current.getBoundingClientRect().top + startY;
+    
+    // Offset by 120px so the scroll stops smoothly above the Trust & Safety footer
+    const targetY = Math.max(0, anchorTop - window.innerHeight + 120);
+    const distance = targetY - startY;
+
+    // 800ms duration provides a smooth, non-jarring ease
+    const duration = 800; 
+    let startTime: number | null = null;
+
+    // Ease-Out Quartic for a sleek, gentle deceleration
+    const easeOutQuart = (t: number) => 1 - Math.pow(1 - t, 4);
+
+    const step = (currentTime: number) => {
+      if (!startTime) startTime = currentTime;
+      const timeElapsed = currentTime - startTime;
+      const progress = Math.min(timeElapsed / duration, 1);
+
+      const easeProgress = easeOutQuart(progress);
+
+      window.scrollTo(0, startY + distance * easeProgress);
+
+      if (timeElapsed < duration) {
+        window.requestAnimationFrame(step);
+      }
+    };
+
+    window.requestAnimationFrame(step);
+  }, 100);
+}
 
   // update 1.1 ----------
   function handleTutorialToggle() {
@@ -97,27 +194,72 @@ export default function ChallengePage({
   // ---------- update 1.1
 
   async function handleRun() {
-    if (!pyodide) return
+    if (loading) return 
 
     triggerBlackFlash()
+    scrollToChallengeEnd()
+    setMascotHint(null)
 
-    const rawResult = await runPython(pyodide, code, input)
-    const userOut = normalize(rawResult)
+    let allPassed = true
+    let outputLog = ""
+    let userOut = ""
+    let expected = ""
 
-    const rawExpected =
-      typeof currentChallenge.expectedOutput === "function"
-        ? currentChallenge.expectedOutput(input)
-        : currentChallenge.expectedOutput
+    for (let i = 0; i < currentChallenge.testCases.length; i++) {
+      const testCase = currentChallenge.testCases[i]
+      const testInput = i === 0 && !testCase.isHidden ? input : testCase.input
 
-    const expected = normalize(rawExpected)
+      // 3. runPython no longer needs the pyodide object passed in
+      const rawResult = await runPython(code, testInput) 
+      userOut = normalize(rawResult)
 
-    if (userOut.startsWith("❌")) {
-      setOutput(userOut)
-      setShowExplanation(false)
-      return
+      const rawExpected = typeof testCase.expectedOutput === "function"
+          ? testCase.expectedOutput(testInput)
+          : testCase.expectedOutput
+      expected = normalize(rawExpected)
+
+      if (userOut.startsWith("❌")) {
+        setOutput(`Execution Error:\n${userOut}`)
+
+        const universalHint = getUniversalMascotHint(code, userOut, expected)
+        showMascotHint(universalHint || "Oops! Your code threw an error before it could finish. Check your spelling and syntax!")
+        setShowExplanation(false)
+        allPassed = false
+        break
+      }
+
+      if (userOut === expected) {
+        outputLog += `Passed${testCase.isHidden ? " (Hidden)" : ""}\n`
+      } if (userOut !== expected) {
+        outputLog += `❌ Failed${testCase.isHidden ? " (Hidden)" : ""}\n\n`
+        
+        if (!testCase.isHidden) {
+          const hasInput = testInput.trim() !== ""
+
+          if (hasInput) {
+            outputLog += `Input:\n${testInput}\n\nYour Output:\n${userOut}\n\nExpected:\n${expected}`
+          } else {
+            outputLog += `Your Output:\n${userOut}\n\nExpected:\n${expected}`
+          }
+        } else {
+          outputLog += `Your code failed on a hidden edge case. Read the elephant's hint below!`
+        }
+        
+        setOutput(outputLog)
+
+        // 1. First check for universal syntax/formatting mistakes
+        const universalHint = getUniversalMascotHint(code, userOut, expected)
+        
+        // 2. Set the mascot hint (universal hint takes priority over testCase.hint)
+        showMascotHint(universalHint || testCase.hint)
+        
+        setShowExplanation(false)
+        allPassed = false
+        break
+      }
     }
 
-    if (userOut === expected) {
+    if (allPassed) {
       const isFirstCompletion = !completed.has(currentChallenge.id)
 
       if (isFirstCompletion) {
@@ -135,13 +277,8 @@ export default function ChallengePage({
         })
       }
 
-      setOutput("Correct output!")
+      setOutput(outputLog + "\nAll test cases passed! Great job!")
       setShowExplanation(true)
-    } else {
-      setOutput(
-        `❌ Wrong output\n\nYour output:\n${userOut}\n\nExpected:\n${expected}`
-      )
-      setShowExplanation(false)
     }
   }
 
@@ -205,6 +342,20 @@ export default function ChallengePage({
         </div>
       </div>
 
+       {/* NEW: Mascot Feedback UI positioned above the output panel */}
+      {mascotHint && (
+        <div className="mascot-feedback-container">
+          <img 
+            src={elephantLeft} 
+            alt="CodeGana Hint Mascot" 
+            className="mascot-image" 
+          />
+          <div className="mascot-speech-bubble">
+            <p>{mascotHint}</p>
+          </div>
+        </div>
+      )}
+
       <div className="output-panel-container">
         <h2>Program Output</h2>
         <OutputPanel output={output} />
@@ -232,17 +383,35 @@ export default function ChallengePage({
                 ✕
               </button>
             </div>
+
+            {/* NEW: Map Filter Buttons */}
+            <div className="map-filter-container">
+              {['all', 'easy', 'medium', 'hard'].map((level) => (
+                <button
+                  key={level}
+                  className={`map-filter-btn ${mapFilter === level ? 'active' : ''}`}
+                  onClick={() => setMapFilter(level)}
+                >
+                  {level.charAt(0).toUpperCase() + level.slice(1)}
+                </button>
+              ))}
+            </div>
       
             <div className="challenge-map">
-              {challenges.map((challenge, index) => {
+              {challenges
+                .filter(challenge => mapFilter === 'all' || challenge.difficulty === mapFilter)
+                .map((challenge, mappedIndex) => {
+                
+                // Track original index so progression/unlock logic remains intact
+                const originalIndex = challenges.findIndex(c => c.id === challenge.id)
                 const isCompleted = completed.has(challenge.id)
-                const isCurrent = currentIndex === index
-                const isUnlocked = index === 0 || completed.has(challenges[index - 1].id) || isCompleted
+                const isCurrent = currentIndex === originalIndex
+                const isUnlocked = originalIndex === 0 || completed.has(challenges[originalIndex - 1].id) || isCompleted
       
                 return (
                   <div 
                     key={challenge.id} 
-                    className={`map-node-row ${index % 2 === 0 ? "left" : "right"}`}
+                    className={`map-node-row ${mappedIndex % 2 === 0 ? "left" : "right"}`}
                   >
                     <button
                       className={`map-node ${
@@ -254,14 +423,15 @@ export default function ChallengePage({
                       }`}
                       disabled={!isUnlocked}
                       onClick={() => {
-                        setCurrentIndex(index)
+                        setCurrentIndex(originalIndex)
                         setOutput("")
                         setShowExplanation(false)
                         setShowMap(false)
+                        setMascotHint(null) // Reset mascot on challenge change
                       }}
-                      aria-label={`Challenge ${index + 1}: ${challenge.title}`}
+                      aria-label={`Challenge ${originalIndex + 1}: ${challenge.title}`}
                     >
-                      <span className="map-node-number">{index + 1}</span>
+                      <span className="map-node-number">{originalIndex + 1}</span>
                     </button>
       
                     <div className="map-node-label">
@@ -274,7 +444,6 @@ export default function ChallengePage({
           </div>
         </div>
       )} {/* ---------- update 1.1 */}
-
       {/* UPDATED: Nav buttons with Tutorial button */}
       <div className={`nav-buttons ${showTutorial ? 'tutorial-active' : ''}`}>
         {currentIndex > 0 && (
@@ -297,12 +466,13 @@ export default function ChallengePage({
               setCurrentIndex(currentIndex + 1)
               setOutput("")
               setShowExplanation(false)
+              setMascotHint(null)
             }}
           >
             Next →
           </button>
         )}
- 
+         <HintDisplay challenge={currentChallenge} />
         {/* NEW: Tutorial Button */}
         <button
           className={`tutorial-button ${showTutorial ? 'active' : ''}`}
@@ -323,7 +493,7 @@ export default function ChallengePage({
       >
         <div className="youtube-video-wrapper">
           <div className="youtube-video-header">
-            <h3 className="youtube-video-title">Video Tutorial</h3>
+            <h3 className="youtube-video-title">{currentChallenge.videoTitle}</h3>
             <button
               className="youtube-video-close"
               onClick={() => setShowTutorial(false)}
@@ -345,6 +515,18 @@ export default function ChallengePage({
           </div>
         </div>
       </div>
+      <div ref={pageBottomAnchorRef} style={{ height: "1px", paddingBottom: "0rem" }} />
+        <footer className="universal-footer">
+        <span className="footer-label">Trust & Safety</span>
+        <div className="footer-links">
+          <Link to="/privacy" className="footer-privacy-btn">
+            Privacy Policy (COPPA)
+          </Link>
+          <Link to="/terms" className="footer-privacy-btn">
+            Terms of Service
+          </Link>
+        </div>
+      </footer>
     </div>
   )
 }

@@ -119,9 +119,9 @@
 }
 
 .modal-close-btn:hover {
-  background: rgb(144, 43, 43);
-  border-color: rgba(255, 255, 255, 0.76);
-  transform: rotate(90deg) scale(1);
+  background: rgb(190, 36, 36);
+  border: 2px solid rgba(255, 0, 0, 0.841);
+  transform: rotate(180deg) scale(1);
 }
 
 .modal-content {
@@ -131,7 +131,7 @@
 .modal-title {
   font-size: 2.5rem;
   font-weight: 800;
-  background: linear-gradient(135deg, #b2f65f 0%, #00d4ff 100%);
+  background: linear-gradient(135deg, #b2f65f 0%, #b2f65f 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -221,7 +221,7 @@
 
 .output-label {
   font-size: 0.9rem;
-  color: #00badf;
+  color: #7a44c1;
   font-weight: 600;
   margin-bottom: 0.5rem;
   text-transform: uppercase;
@@ -230,7 +230,7 @@
 
 .output-box {
   background: rgb(0, 7, 18);
-  border: 2px solid rgba(95, 155, 246, 0.2);
+  border: 2px solid rgba(122, 68, 193, 0.5);
   border-radius: 12px;
   padding: 1rem;
 }

@@ -1,7 +1,10 @@
 import { useEffect, useRef } from "react"
 import StaggeredMenu from "./StaggeredMenu/StaggeredMenu"
+import AvatarHeader from "./AvatarHeader/AvatarHeader"
 
 import codeganaLogoWide from "../images/codeganaLogoWide.png"
+import xpIcon from "../images/xpIcon.png"
+import streakIcon from "../images/streakIcon.png"
 
 type MenuItem = {
   label: string
@@ -12,13 +15,13 @@ type MenuItem = {
 
 type Props = {
   xp: number
+  setXp: React.Dispatch<React.SetStateAction<number>>
   streak: number
   items: MenuItem[]
   onLogoClick?: () => void
 }
 
-
-export default function TopNavbar({ xp, streak, items, onLogoClick }: Props) {
+export default function TopNavbar({ xp, setXp, streak, items, onLogoClick }: Props) {
   const prevXp = useRef(xp)
   const starRef = useRef<HTMLSpanElement>(null)
 
@@ -53,21 +56,18 @@ export default function TopNavbar({ xp, streak, items, onLogoClick }: Props) {
       </div>
 
       <div className="nav-right">
-        {/* XP STAR */}
         <div className="stat xp">
-          <span className="icon" ref={starRef}>
-            <span className="fill"></span>
-          </span>
+          <img src={xpIcon} className="icon"></img>
           <span className="stat-value">{xp}</span>
         </div>
 
-        {/* STREAK */}
         <div className="stat streak">
-          <span className="icon">
-            <span className="fill"></span>
-          </span>
+          <img src={streakIcon} className="icon"></img>
           <span className="stat-value">{streak}</span>
         </div>
+
+        {/* PASS XP & SETXP TO AVATAR HEADER */}
+        <AvatarHeader xp={xp} setXp={setXp} />
       </div>
     </header>
   )
