@@ -1,73 +1,40 @@
-# React + TypeScript + Vite
+CodeGana
+CodeGana is an interactive, web-based platform designed to teach Python through gamified coding challenges and real-time execution. Built to move beyond passive tutorial video consumption, the platform provides immediate feedback in an isolated environment, helping users build problem-solving skills and code literacy.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Technical Overview
+CodeGana operates completely client-side to keep hosting friction low while maintaining fast execution speeds. By compiling Python scripts directly inside the browser using WebAssembly, users can run, test, and debug code without needing a sandboxed backend server infrastructure.
 
-Currently, two official plugins are available:
+Core Stack
+Frontend: React, TypeScript, Vite
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Styling & UI: Custom CSS Modules, Tailwind CSS, Lottie Web Animations
 
-## React Compiler
+Code Execution Engine: Pyodide (Python runtime compiled to WebAssembly)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Routing & State: React Router v6, Context API, LocalStorage persistence
 
-## Expanding the ESLint configuration
+Architectural Highlights
+Client-Side Execution Engine
+Instead of routing user code to a remote Docker container or AWS Lambda function, CodeGana loads a lightweight Pyodide WebAssembly instance directly into the client browser runtime.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Intercepts standard output (sys.stdout) to stream execution logs directly to the integrated UI terminal.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Captures and parses custom test cases in memory to evaluate user solutions against expected outputs.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+Isolates code execution from the main application thread to keep the web interface responsive during runtime calculations.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Gamification & State Persistence
+Keeps track of user experience points (XP), daily streaks, and challenge completion status using browser LocalStorage.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Features custom avatar rendering and progression logic via React Context state wrappers.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Employs custom CSS animations and WebGL lighting effects to build an engaging, arcade-style aesthetic.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Challenge System & Testing Infrastructure
+Every challenge inside the platform includes a structured test suite:
+
+Public Test Cases: Visible input and output pairings that help guide the initial solution path.
+
+Hidden Edge Cases: Hidden assertion checks (handling zero values, negative numbers, boundary limits, and empty inputs) to test edge-case handling.
+
+Automated Hint Engine: Dynamic hints that trigger when specific assertion checks fail.
