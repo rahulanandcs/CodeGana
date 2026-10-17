@@ -85,7 +85,7 @@ export default function AvatarShopModal({ xp, setXp, onClose }: AvatarShopModalP
       <div className="shop-modal-container">
         <button className="shop-close-btn" onClick={onClose}>✕</button>
 
-        {/* {message && <div className="shop-toast-notification">{message}</div>} */}
+        {message && <div className="shop-toast-notification">{message}</div>}
 
         <div className="shop-header">
           <h2>Cosmetic Shop</h2>

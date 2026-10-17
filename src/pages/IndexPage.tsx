@@ -148,6 +148,32 @@ useEffect(() => {
   return () => observer.disconnect();
 }, []);
 
+// Inside IndexPage() before the return statement:
+  const heroCtaRef = useRef<HTMLButtonElement>(null);
+  const footerRef = useRef<HTMLElement>(null);
+  const [isHeroCtaVisible, setIsHeroCtaVisible] = useState(true);
+  const [isFooterVisible, setIsFooterVisible] = useState(false);
+
+  useEffect(() => {
+    const observerOptions = { threshold: 0.1 };
+
+    const ctaObserver = new IntersectionObserver(([entry]) => {
+      setIsHeroCtaVisible(entry.isIntersecting);
+    }, observerOptions);
+
+    const footerObserver = new IntersectionObserver(([entry]) => {
+      setIsFooterVisible(entry.isIntersecting);
+    }, observerOptions);
+
+    if (heroCtaRef.current) ctaObserver.observe(heroCtaRef.current);
+    if (footerRef.current) footerObserver.observe(footerRef.current);
+
+    return () => {
+      ctaObserver.disconnect();
+      footerObserver.disconnect();
+    };
+  }, []);
+
 // --------------------------- HTML -----------------------------
   return (
     <div className="index-page">
@@ -194,7 +220,7 @@ useEffect(() => {
             </div>
           </div>
 
-          <button className="hero-cta" onClick={() => navigate("/challenges")}>
+          <button ref={heroCtaRef} className="hero-cta" onClick={() => navigate("/challenges")}>
             <span>Begin Your Journey</span>
             <div className="cta-glow" />
           </button>
@@ -202,7 +228,7 @@ useEffect(() => {
 
       </section>
 
-      <img decoding="async" width="100%" height="206" src={trueDrip} className="drippy" alt="Divider | Image" sizes="(max-width: 1024px) 100vw, 1024px"></img>
+      <img decoding="async" width="100%" height="206" src={trueDrip} className="drippy" alt="Decorative transition divider" sizes="(max-width: 1024px) 100vw, 1024px"></img>
       
 
 
@@ -236,7 +262,7 @@ useEffect(() => {
                 <iframe src="https://lottie.host/embed/d73e4b26-3600-4cba-8f54-848cff87864d/lUx8VfQIws.lottie"></iframe>
                 <div className="box-text">
                   <h3>Interactive Learning</h3>
-                  <p>CodeGana is an active learning platform that replaces passive video tutorials with a engaging, challenges that requires executing live code to progress. This feedback loop eliminates "tutorial limbo" and high cortisol by letting students build real muscle memory needed for future real world software development.</p>
+                  <p>CodeGana swaps boring video tutorials for hands-on challenges. Instead of watching someone else, you run live Python right in your browser. Instant feedback kills tutorial limbo and builds real muscle memory for aspiring devs.</p>
                 </div>
               </div>
             </div>
@@ -245,7 +271,7 @@ useEffect(() => {
               <div className="css-lightning-icon"><div className="lightning-strike"><div className="bolt" /></div></div>
               <h3>Monthly Puzzles</h3>
               <p>Fresh problems monthly</p>
-              <span className="box-stat">12+ Challenges</span>
+              <span className="box-stat">20+ Challenges</span>
             </div>
 
             <div className="bento-box box-xp" style={{ transform: `translateY(${Math.max(0, 80 - scrollY * 0.2)}px)`, opacity: Math.min(1, scrollY / 300) }}>
@@ -274,7 +300,7 @@ useEffect(() => {
                 <iframe src="https://lottie.host/embed/4d17d3f1-0071-47bb-aa89-789d60d87b5c/6ZbOt9t8Rx.lottie"></iframe> 
                 <div className="box-text">
                   <h3>Interactive Learning</h3>
-                  <p>CodeGana is an active learning platform that replaces passive video tutorials with a engaging, challenges that requires executing live code to progress. This feedback loop eliminates "tutorial limbo" and high cortisol by letting students build real muscle memory needed for future real world software development.</p>
+                  <p>CodeGana swaps boring video tutorials for hands-on challenges. Instead of watching someone else, you run live Python right in your browser. Instant feedback kills tutorial limbo and builds real muscle memory for actual software dev.</p>
                 </div>
               </div>
             </div>
@@ -306,7 +332,7 @@ useEffect(() => {
         </div>
       </section>
 
-      <img decoding="async" width="100%" height="206" src={upGrafittiNew} className="drippy2" alt="Divider | Image" sizes="(max-width: 1024px) 100vw, 1024px"></img>
+      <img decoding="async" width="100%" height="206" src={upGrafittiNew} className="drippy2" alt="Graffiti style transition divider" sizes="(max-width: 1024px) 100vw, 1024px"></img>
       
 
       
@@ -351,7 +377,7 @@ useEffect(() => {
 
                             {/* --------------- Social Media Section ------------------ */}
       <section className="index-footer" style={{ backgroundImage: `url(${blackSkyBG})` }}>
-        <img decoding="async" width="100%" height="206" src={blackDownDrip} id="blackDrip" className="" alt="Divider | Image" sizes="(max-width: 1024px) 100vw, 1024px"></img>
+        <img decoding="async" width="100%" height="206" src={blackDownDrip} id="blackDrip" className="" alt="Graffiti style transition divider" sizes="(max-width: 1024px) 100vw, 1024px"></img>
         <div 
           ref={phoneRef} 
           className="samsung"
@@ -363,6 +389,9 @@ useEffect(() => {
               <div className="footer-brand">
                 <h2 className="footer-logo">CodeGana</h2>
                 <p>Trust the process… then debug the process.</p>
+                <p className="footer-contact-info" style={{ fontSize: '0.8rem', color: '#888' }}>
+                  Contact: codeganabiz@gmail.com
+                </p>
               </div>
 
               <div className="social-modules">
@@ -403,7 +432,7 @@ useEffect(() => {
           </div>
           
         </div>
-       <footer className="universal-footer">
+       <footer ref={footerRef} className="universal-footer">
         <span className="footer-label">Trust & Safety</span>
         <div className="footer-links">
           <Link to="/privacy" className="footer-privacy-btn">
@@ -415,6 +444,12 @@ useEffect(() => {
         </div>
       </footer>
     </section>
+    {/* Dynamic Sticky Mobile CTA */}
+    <div className={`sticky-mobile-cta ${(!isHeroCtaVisible && !isFooterVisible) ? 'is-visible' : ''}`}>
+      <button onClick={() => navigate("/challenges")}>
+        Begin Your Journey
+      </button>
+    </div>
 </div>
   )
 }

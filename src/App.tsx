@@ -1,14 +1,17 @@
 import { useState, useEffect, useRef } from 'react';
-import { Routes, Route, useNavigate, Link } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import { AvatarProvider } from './context/AvatarContext';
 import ChallengePage from "./pages/ChallengePage";
 import TopNavbar from './components/TopNavbar';
 import CharacterCreator from './components/CharacterCreator/CharacterCreator.tsx';
 import UserProfile from './components/Profile/UserProfile'; 
 
-import BattlePage from './pages/BattlePage';
+import BattlePage from './pages/BattlePage.tsx';
 import PrivacyPolicy from './pages/PrivacyPolicy.tsx';
 import TermsOfService from './pages/TermsOfService.tsx'
+
+import NotFound from './pages/NotFound';
+import CookieBanner from './components/CookieBanner';
 
 import challengesIcon from "./images/challengesIcon.png";
 import docIcon from "./images/documentationIcon.png";
@@ -136,8 +139,11 @@ export default function App() {
             {/* <Route path="/privacypolicy" element={<PrivacyPolicy />} /> */}
             <Route path="/privacy" element={<PrivacyPolicy />} />
             <Route path="/terms" element={<TermsOfService/>} />
+            <Route path="*" element={<NotFound />} />
+            <Route element="{<ThankYou" path="/thank-you"/>
           </Routes>
         </div>
+        <CookieBanner />
       </div>
     </AvatarProvider>
   );

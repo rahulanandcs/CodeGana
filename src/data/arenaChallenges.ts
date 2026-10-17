@@ -431,7 +431,7 @@ export const basicArenaChallenges: Challenge[] = [
     starterCode: "my_dict = {'a': 1, 'b': 2}\nnew_key = input().strip()\nnew_val = int(input())\n# Add to dict, print keys",
     sampleInput: "c\n3",
     expectedOutput: (input) => {
-      const [k, v] = input.trim().split('\n');
+      const [k] = input.trim().split('\n');
       return `['a', 'b', '${k.trim()}']`;
     },
     explanation: "Add to a dictionary using dict[key] = value, and get keys using list(dict.keys()).",

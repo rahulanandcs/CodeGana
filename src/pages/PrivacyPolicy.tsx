@@ -62,6 +62,7 @@ export default function PrivacyPolicy() {
                   <li><strong>Account Credentials:</strong> Non-PII usernames (e.g., <code className="inline-code">SwiftPanda42</code>) and encrypted passwords, or SSO credentials via Google Workspace for Education/Clever.</li>
                   <li><strong>Learning Progress:</strong> Completed Python challenges, test runner execution metrics, streak activity, avatar unlocks, and Arena game results.</li>
                   <li><strong>System Logs:</strong> Non-identifying operational telemetry required strictly to maintain system stability and run code execution safely.</li>
+                  <li><strong>Match Share Statements:</strong> Shared battle victory summaries generated via the "Share Result" button are generated locally on your device and contain zero personal identifiers or user tracking data.</li>
                 </ul>
                 <div className="warning-callout">
                   <strong>What We DO NOT Collect:</strong> We do not collect full legal names, physical addresses, student phone numbers, precise geolocation, audio/video recordings, or social media handles.

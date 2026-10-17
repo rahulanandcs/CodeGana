@@ -50,9 +50,9 @@
 }
 
 /* If no grid-area is specified, let items flow naturally */
-.bento-tile:not([data-grid-area]) {
+/* .bento-tile:not([data-grid-area]) {
   /* Will auto-place in available grid cells */
-}
+
 
 /* Responsive grid adjustments */
 @media (max-width: 768px) {

@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import CharacterCreator from '../components/CharacterCreator/CharacterCreator'
+// import CharacterCreator from '../components/CharacterCreator/CharacterCreator'
 // // // Route: /profile
 export default function ProfilePage() {
   // Scroll to top on mount

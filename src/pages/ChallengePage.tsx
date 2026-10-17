@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react"
-import { useNavigate, Link } from "react-router-dom"
+import { Link } from "react-router-dom"
 import CodeEditor from "../components/CodeEditor"
 import InputBox from "../components/InputBox"
 import { usePyodide } from "../hooks/usePyodide"
@@ -13,6 +13,7 @@ import "./ChallengePage.css"
 
 import spaceBG from "../images/starBG.jpg"
 import elephantLeft from '../images/CGhint_facingLeft!.png'
+import LoadingSpinner from "../components/LoadingSpinner"
 
 type ChallengePageProps = {
   xp: number
@@ -282,7 +283,7 @@ function scrollToChallengeEnd() {
     }
   }
 
-  if (loading) return <div>Loading Python engine…</div>
+  if (loading) return <LoadingSpinner message="Booting Python Engine..." />
 
   return (
     <div className="challenge-page">

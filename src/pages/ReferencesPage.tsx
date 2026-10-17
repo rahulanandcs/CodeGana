@@ -1,6 +1,6 @@
 import { useState } from "react"
 import BentoGrid from "../components/BentoGrid"
-import { useNavigate, Link } from "react-router-dom"
+import { Link } from "react-router-dom"
 import ReferenceModal from "../components/ReferenceModal"
 import { bentoBoxes } from "../data/referenceData"
 import type { ReferenceItem } from "../data/referenceData"

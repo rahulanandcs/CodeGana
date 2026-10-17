@@ -6,62 +6,73 @@ export function useBattleSocket() {
   const [battleState, setBattleState] = useState<BattleState>('idle');
   const [myHealth, setMyHealth] = useState(100);
   const [opponentHealth, setOpponentHealth] = useState(100);
-  
-  const [myId, setMyId] = useState<string | null>(null);
-  const myIdRef = useRef<string | null>(null); 
-  
-  // NEW: Store the synced sequence of questions
   const [sequence, setSequence] = useState<number[]>([]);
   
+  const myIdRef = useRef<string | null>(null);
   const socketRef = useRef<WebSocket | null>(null);
 
-  // Accept difficulty as an argument
   const connectToBattle = useCallback((difficulty: 'basic' | 'intermediate') => {
     setBattleState('searching');
     setMyHealth(100);
     setOpponentHealth(100);
 
-    // Append difficulty to the path
-    const ws = new WebSocket(`ws://127.0.0.1:8000/ws/battle/${difficulty}`);
+    // Dynamic Host and Secure Protocol Resolution
+    const rawHost = import.meta.env.VITE_SERVER_URL || "localhost:8080";
+    const cleanHost = rawHost.replace(/^(wss?:\/\/|https?:\/\/)/, '');
+    const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+    
+    // Connect to FastAPI endpoint
+    const socketUrl = `${protocol}//${cleanHost}/ws/battle/${difficulty}?pool_size=10`;
+    const ws = new WebSocket(socketUrl);
+    
     socketRef.current = ws;
 
     ws.onmessage = (event) => {
-      const data = JSON.parse(event.data);
+      try {
+        const data = JSON.parse(event.data);
 
-      switch (data.type) {
-        case 'CONNECTED':
-          myIdRef.current = data.my_id;
-          setMyId(data.my_id);
-          break;
+        switch (data.type) {
+          case 'CONNECTED':
+            myIdRef.current = data.my_id; // Stored safely in ref without throwing error
+            break;
 
-        case 'WAITING_FOR_OPPONENT':
-          setBattleState('searching');
-          break;
+          case 'WAITING_FOR_OPPONENT':
+            setBattleState('searching');
+            break;
 
-        case 'MATCH_FOUND':
-          setSequence(data.sequence); // Save the synchronized problem sequence!
-          setBattleState('battling');
-          break;
+          case 'MATCH_FOUND':
+            setSequence(data.sequence);
+            setBattleState('battling');
+            break;
 
-        case 'HEALTH_UPDATE':
-          if (data.target === myIdRef.current) {
-            setMyHealth(data.new_health);
-          } else {
-            setOpponentHealth(data.new_health);
-          }
-          break;
+          case 'HEALTH_UPDATE':
+            if (data.target === myIdRef.current) {
+              setMyHealth(data.new_health);
+            } else {
+              setOpponentHealth(data.new_health);
+            }
+            break;
 
-        case 'GAME_OVER':
-          if (data.winner === myIdRef.current) {
-            setBattleState('won');
-          } else {
-            setBattleState('lost');
-          }
-          break;
+          case 'GAME_OVER':
+            if (data.winner === myIdRef.current) {
+              setBattleState('won');
+            } else {
+              setBattleState('lost');
+            }
+            break;
+        }
+      } catch (err) {
+        console.error("Failed to parse WebSocket message:", err);
       }
     };
 
-    ws.onclose = () => setBattleState('idle');
+    ws.onerror = (error) => {
+      console.error("WebSocket Error:", error);
+    };
+
+    ws.onclose = () => {
+      setBattleState('idle');
+    };
   }, []);
 
   const sendAttack = useCallback(() => {
