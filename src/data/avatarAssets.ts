@@ -13,6 +13,13 @@ export const colorMap: Record<string, { name: string; hex: string }> = {
 
 export const colorOrder = ['R', 'O', 'Y', 'G', 'B', 'I', 'V'] as const
 
+// Let Vite include every color combination and resolve its production URL.
+const avatarImages = import.meta.glob<string>('../images/profileAvatars/*.png', {
+  eager: true,
+  query: '?url',
+  import: 'default',
+})
+
 // Get PNG filename from color combination
 export function getAvatarFileName(
   primary: string,
@@ -29,5 +36,5 @@ export function getAvatarImagePath(
   tertiary: string
 ): string {
   const fileName = getAvatarFileName(primary, secondary, tertiary)
-  return `/src/images/profileAvatars/${fileName}.png`
+  return avatarImages[`../images/profileAvatars/${fileName}.png`]
 }
